@@ -1,0 +1,12 @@
+.wishlist-section {
+  background: url("../../assets/images/header-bg.jpg");
+  .wishlist-container {
+    width: 100%;
+    padding: 100px 50px;
+    // background-color: red;
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: auto;
+    gap: 30px;
+  }
+}

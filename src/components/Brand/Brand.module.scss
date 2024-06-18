@@ -1,0 +1,7 @@
+.brand-container {
+    padding:  50px;
+    width: 100%;
+    background: url('../../assets/images/background.jpg');
+    display: grid;
+    grid-template-columns: repeat(6,1fr);
+}

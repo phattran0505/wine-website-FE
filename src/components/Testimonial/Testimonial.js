@@ -1,0 +1,40 @@
+import classNames from "classnames/bind";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+import { testimonials } from "../../assets/data/Data";
+import SubTitle from "../../shared/SubTitle/SubTitle";
+import quotesImg from "../../assets/images/quotes.webp";
+
+import styles from "./Testimonial.module.scss";
+const cx = classNames.bind(styles);
+function Testimonial() {
+  return (
+    <div className={cx("testimonial-container")}>
+      <SubTitle subtitle={"Testimonials"} />
+      <div className={cx("testimonial-list")}>
+        <Swiper spaceBetween={50} slidesPerView={3} loop={true}>
+          {testimonials.map((testimonial, index) => (
+            <SwiperSlide key={index}>
+              <div className={cx("testimonial-box")}>
+                <div className={cx("testimonial-desc")}>
+                  <p>{testimonial.desc}</p>
+                </div>
+                <div className={cx("testimonial-info")}>
+                  <div className={cx("avatar")}>
+                    <img src={testimonial.avatar} alt=""></img>
+                  </div>
+                  <div className={cx("info")}>
+                    <span className={cx("name")}>{testimonial.name}</span>
+                    <span className={cx("job")}>{testimonial.job}</span>
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+    </div>
+  );
+}
+
+export default Testimonial;

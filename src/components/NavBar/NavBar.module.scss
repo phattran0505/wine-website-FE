@@ -1,0 +1,128 @@
+nav {
+  width: 100%;
+  position: absolute;
+  z-index: 10;
+  .top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: var(--dark-color);
+    padding: 15px 50px;
+    .info {
+      color: var(--gray-color);
+      display: flex;
+      align-items: center;
+      font-size: 13px;
+      letter-spacing: 0.3px;
+      line-height: 19.2px;
+      i {
+        margin-right: 5px;
+      }
+      a {
+        margin-right: 10px;
+        &:hover {
+          color: var(--primary-color);
+          transition: var(--transition);
+        }
+      }
+    }
+    .options {
+      ul {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        gap: 15px;
+        color: var(--gray-color);
+        font-size: 13px;
+        li {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 3px;
+          cursor: pointer;
+          &:hover {
+            color: var(--white-color);
+            transition: var(--transtion);
+          }
+          a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3px;
+          }
+        }
+      }
+    }
+  }
+  .bottom {
+    width: 100%;
+    padding: 12px 50px 60px;
+    background: url("../../assets/images/header-bg.png");
+    background-position: center bottom;
+    background-size: cover;
+    background-repeat: no-repeat;
+    .bottom-content {
+      width: 100%;
+      min-height: 135px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--gray-color);
+      .menu {
+        font-size: 20px;
+        cursor: pointer;
+      }
+      a {
+        padding-left: 50px;
+        // flex: 1;
+      }
+      .icons {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        font-size: 16px;
+
+        i {
+          cursor: pointer;
+          &:hover {
+            color: var(--primary-color);
+            transition: var(--transtion);
+          }
+          &.shopping-icon {
+            position: relative;
+          }
+        }
+        span {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 15px;
+          height: 15px;
+          border-radius: 50%;
+          background-color: #36373e;
+          color: var(--white-color);
+          font-size: 12px;
+          bottom: -3px;
+          right: -10px;
+          font-style: normal;
+        }
+        .user-image {
+          width: 25px;
+          height: 25px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+        .avatar {
+          opacity: 0;
+          user-select: none;
+          &.active {
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}

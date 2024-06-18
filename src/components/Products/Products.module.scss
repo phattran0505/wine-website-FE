@@ -1,0 +1,15 @@
+.product-container {
+    width: 100%;
+    padding: 50px;
+    background: url('../../assets/images/background.jpg');
+
+    .product-list {
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        grid-template-rows: auto;
+        gap: 30px;
+        width: 100%;
+        height: auto;
+        margin-top: 50px;
+    }
+}
