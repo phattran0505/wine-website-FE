@@ -14,9 +14,6 @@
     width: 100%;
     padding: 50px;
     background-color: #151515;
-    // display: grid;
-    // grid-template-columns: repeat(4, 1fr);
-    // grid-template-rows: auto;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -241,5 +238,58 @@
 @keyframes third {
   to {
     width: 70%;
+  }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1023px) {
+  .about-section {
+    .about-us {
+      padding: 50px 20px;
+    }
+    .count-up {
+      padding: 50px 20px;
+    }
+    .about-banner {
+      padding: 60px 20px;
+    }
+    .skills {
+      padding: 50px 20px;
+    }
+    .motto-container {
+      justify-content: center;
+      padding: 0 20px;
+      .motto {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .about-section {
+    .about-us {
+      padding: 50px 20px;
+    }
+    .count-up {
+      justify-content: center;
+      flex-direction: column;
+      padding: 50px 20px;
+    }
+    .about-banner {
+      grid-template-columns: repeat(1,1fr);
+      grid-template-rows: auto;
+      padding: 60px 20px;
+    }
+    .skills {
+      padding: 50px 20px;
+    }
+    .motto-container {
+      justify-content: center;
+      padding: 0 20px;
+      background-position: center;
+      .motto {
+        width: 100%;
+      }
+    }
   }
 }

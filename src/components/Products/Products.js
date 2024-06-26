@@ -26,8 +26,8 @@ function Products() {
     <div className={cx("product-container")}>
       <SubTitle subtitle={"recent products"} />
       <div className={cx("product-list")}>
-        {wines.map((product, index) => (
-          <ProductBox key={index} product={product} />
+        {wines.map((product) => (
+          <ProductBox key={product._id} product={product} />
         ))}
       </div>
     </div>

@@ -70,17 +70,33 @@
       }
     }
     button {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center; 
-        margin: 0 10px;
-        font-size: 16px;
-        background-color: transparent;
-        color: var(--primary-color);
-        outline: none;
-        border: none;
-        text-transform: capitalize;
-        cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 10px;
+      font-size: 16px;
+      background-color: transparent;
+      color: var(--primary-color);
+      outline: none;
+      border: none;
+      text-transform: capitalize;
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1023px) {
+  .blog-section {
+    .blog-list {
+      padding: 50px 100px 100px;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .blog-section {
+    .blog-list {
+      padding: 50px 20px 100px;
     }
   }
 }

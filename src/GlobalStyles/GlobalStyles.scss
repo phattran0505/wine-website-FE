@@ -10,6 +10,7 @@
   list-style: none;
   text-decoration: none;
   font-weight: 400;
+  scroll-behavior: smooth;
 }
 body {
   font-family: var(--primary-font);
@@ -20,7 +21,7 @@ body {
   --text-size: 16px;
 
   --primary-color: #caa462;
-  --white-color: #cdcdce;
+  --white-color: #fff;
   --text-color: #cecece;
   --gray-color: #848484;
   --dark-color: #000;
@@ -97,7 +98,7 @@ a.active {
 }
 .react-transform-wrapper {
   width: 100% !important;
-  height: auto !important;
+  height: 100% !important;
   background-color: #282828;
 }
 .react-transform-component {
@@ -106,6 +107,10 @@ a.active {
   justify-content: center;
   width: 100% !important;
   height: 100% !important;
+}
+.swiper {
+  width: 100%;
+  height: 100%;
 }
 .swiper-pagination {
   width: calc(100% - 30px) !important;
@@ -132,3 +137,12 @@ a.active {
   }
 }
 
+@media screen and (max-width: 767px) {
+  .swiper-pagination {
+    left: 15px !important;
+    .swiper-pagination-bullet {
+      width: 80px;
+      height: 100px;
+    }
+  }
+}

@@ -42,15 +42,15 @@ nav {
           justify-content: center;
           gap: 3px;
           cursor: pointer;
-          &:hover {
-            color: var(--white-color);
-            transition: var(--transtion);
-          }
           a {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 3px;
+            &:hover {
+              color: var(--white-color);
+              transition: var(--transtion);
+            }
           }
         }
       }
@@ -116,10 +116,56 @@ nav {
           object-fit: cover;
         }
         .avatar {
-          opacity: 0;
+          display: none;
           user-select: none;
           &.active {
-            opacity: 1;
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// Tablet
+@media screen and (min-width: 767px) and (max-width: 1023px) {
+  nav {
+    .top {
+      justify-content: center;
+      flex-direction: column;
+      .info {
+        display:block;
+        text-align: center;
+        p {
+          margin: 5px 0;
+        }
+      }
+    }
+  }
+}
+
+
+// Phone
+@media screen and (max-width:767px) {
+  nav {
+    .top{
+      justify-content: center;
+      flex-direction: column;
+      .info {
+        display:block;
+        text-align: center;
+        p {
+          margin: 5px 0;
+        }
+      }
+    }
+    .bottom {
+      padding: 12px 20px 50px;
+      .bottom-content {
+        a {
+          img {
+            width: 90%;
           }
         }
       }

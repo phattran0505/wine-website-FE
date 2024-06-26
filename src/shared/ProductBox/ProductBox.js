@@ -16,13 +16,23 @@ import { BASE_URL } from "../../config/utils";
 import styles from "./ProductBox.module.scss";
 
 const cx = classNames.bind(styles);
-function ProductBox({ product,refetchData }) {
+function ProductBox({ product, refetchData = () => {} }) {
   const { addToCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
-  const [heart, setHeart] = useState(false);
+  const [heart, setHeart] = useState(product.isFavorite);
   const words = product.name.split(" ");
   const name = words.slice(0, 4).join(" ");
+
+  useEffect(() => {
+    if (!user || user === undefined || user === null) {
+      setHeart(false);
+    }
+  }, [user]);
+
   const toggleFavorites = async (id) => {
+    if (!user || user === undefined || user === null) {
+      return alert("You're not authenticated. Please sign in !!");
+    }
     try {
       const res = await fetch(`${BASE_URL}/favorite`, {
         method: "post",
@@ -37,15 +47,12 @@ function ProductBox({ product,refetchData }) {
       if (!res.ok) {
         return alert(res.message);
       }
-      const result = await res.json();
-      if (!result.data) {
-        refetchData()
-      }
+      setHeart(!heart);
+      refetchData();
     } catch (error) {
       return alert(error);
     }
   };
-
   const handleAddToCart = () => {
     if (!user || user === undefined || user === null) {
       return alert("You're not authenticated. Please sign in !!");
@@ -53,7 +60,6 @@ function ProductBox({ product,refetchData }) {
       addToCart(product, product._id);
     }
   };
-
   return (
     <div className={cx("product-box")}>
       <div className={cx("product-image")}>

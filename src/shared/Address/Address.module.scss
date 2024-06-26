@@ -1,4 +1,6 @@
 .address-container {
+  position: relative;
+  // z-index: 10;
   width: 100%;
   padding: 50px;
   background-color: #151515;
@@ -24,5 +26,18 @@
         }
       }
     }
+  }
+}
+
+@media screen and (min-width: 767px) and (max-width: 1023px) {
+  .address-container {
+    padding: 120px 50px 50px;
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  .address-container {
+    padding: 120px 20px 50px;
   }
 }

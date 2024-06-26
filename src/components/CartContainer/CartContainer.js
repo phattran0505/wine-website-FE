@@ -10,7 +10,6 @@ import styles from "./CartContainer.module.scss";
 const cx = classNames.bind(styles);
 function CartContainer() {
   const { openCart, setOpenCart, cart,clearCart,total } = useContext(CartContext);
-  console.log(cart);
   return (
     <div className={cx("cart-container", openCart ? "" : "close")}>
       <div className={cx("cart-header")}>

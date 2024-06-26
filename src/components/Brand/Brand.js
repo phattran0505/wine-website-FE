@@ -12,12 +12,24 @@ const cx = classNames.bind(styles);
 function Brand() {
   return (
     <div className={cx("brand-container")}>
-      <img src={brand1} alt=""></img>
-      <img src={brand2} alt=""></img>
-      <img src={brand3} alt=""></img>
-      <img src={brand4} alt=""></img>
-      <img src={brand5} alt=""></img>
-      <img src={brand6} alt=""></img>
+      <div className={cx("image-box")}>
+        <img src={brand1} alt=""></img>
+      </div>
+      <div className={cx("image-box")}>
+        <img src={brand2} alt=""></img>
+      </div>
+      <div className={cx("image-box")}>
+        <img src={brand3} alt=""></img>
+      </div>
+      <div className={cx("image-box")}>
+        <img src={brand4} alt=""></img>
+      </div>
+      <div className={cx("image-box")}>
+        <img src={brand5} alt=""></img>
+      </div>
+      <div className={cx("image-box")}>
+        <img src={brand6} alt=""></img>
+      </div>
     </div>
   );
 }

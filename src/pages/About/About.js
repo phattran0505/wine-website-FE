@@ -126,13 +126,13 @@ function About() {
           </div>
         </div>
         <div className={cx("skills-box")}>
-          <span>fine wines</span>
+          <span>luxury fine spirits</span>
           <div className={cx("line")}>
             <div className={cx("value", "second")}>80%</div>
           </div>
         </div>
         <div className={cx("skills-box")}>
-          <span>fine wines</span>
+          <span>irish wishky</span>
           <div className={cx("line")}>
             <div className={cx("value", "third")}>70%</div>
           </div>

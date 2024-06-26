@@ -8,11 +8,41 @@ import quotesImg from "../../assets/images/quotes.webp";
 import styles from "./Testimonial.module.scss";
 const cx = classNames.bind(styles);
 function Testimonial() {
+  const breakpoints = {
+    1024: {
+      spaceBetween: 50,
+      slidesPerView: 3,
+    },
+    800: {
+      spaceBetween: 100,
+      slidesPerView: 2,
+    },
+    500: {
+      slidesPerView: 1,
+    },
+    400: {
+      slidesPerView: 1,
+    },
+    300: {
+      slidesPerView: 1,
+    },
+    200: {
+      slidesPerView: 1,
+    },
+    100: {
+      slidesPerView: 1,
+    },
+  };
   return (
     <div className={cx("testimonial-container")}>
       <SubTitle subtitle={"Testimonials"} />
       <div className={cx("testimonial-list")}>
-        <Swiper spaceBetween={50} slidesPerView={3} loop={true}>
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={3}
+          loop={true}
+          breakpoints={breakpoints}
+        >
           {testimonials.map((testimonial, index) => (
             <SwiperSlide key={index}>
               <div className={cx("testimonial-box")}>

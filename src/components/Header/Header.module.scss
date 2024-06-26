@@ -103,3 +103,60 @@ header {
     }
   }
 }
+
+// Tablet
+@media screen and (min-width: 767px) and (max-width: 1023px) {
+  header {
+    .slide-container {
+      .slide-content {
+        .title {
+          h1 {
+            font-size: 48px;
+          }
+        }
+        .desc {
+          font-size: 18px;
+          margin-top: 0;
+        }
+        .discount {
+          font-size: 36px;
+        }
+        .button {
+          a {
+            padding: 15px 40px;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+@media screen and (max-width:767px) {
+header {
+  .slide-container{
+    .slide-content {
+      padding: 100px 20px 0;
+      .title {
+        h1 {
+          font-size: 29px;
+          line-height: 60px;
+        }
+      }
+      .desc {
+        width: 100%;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+      .discount {
+        font-size: 27px;
+      }
+    }
+  }
+  .slide-buttons {
+    display: none;
+  }
+}
+
+}

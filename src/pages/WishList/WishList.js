@@ -3,7 +3,6 @@ import classNames from "classnames/bind";
 
 import { BASE_URL } from "../../config/utils";
 import { AuthContext } from "../../contexts/AuthContext";
-import useFetch from "../../hooks/useFetch";
 import ProductBox from "../../shared/ProductBox/ProductBox";
 
 import styles from "./WishList.module.scss";
@@ -27,16 +26,18 @@ function WishList() {
       alert(error);
     }
   };
-
   useEffect(() => {
     getFavorites();
-  }, []);
-  console.log(favoriteItems);
+  }, [user]);
   return (
     <section className={cx("wishlist-section")}>
       <div className={cx("wishlist-container")}>
         {favoriteItems.map((favorite) => (
-          <ProductBox product={favorite.wineId} key={favorite._id} refetchData={getFavorites}/>
+          <ProductBox
+            product={favorite.wineId}
+            key={favorite._id}
+            refetchData={getFavorites}
+          />
         ))}
       </div>
     </section>

@@ -1,7 +1,5 @@
 import classNames from "classnames/bind";
-// import { useEffect, useState } from "react";
 
-// import { BASE_URL } from "../../config/utils";
 import { Link } from "react-router-dom";
 import { blogs } from "../../assets/data/Data";
 

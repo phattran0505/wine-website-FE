@@ -32,6 +32,39 @@ function WineDetail() {
   const { user } = useContext(AuthContext);
   const { addToCart } = useContext(CartContext);
   const { id } = useParams();
+  const breakpoints = {
+    1024: {
+      spaceBetween: 50,
+      slidesPerView: 4,
+    },
+    800: {
+      spaceBetween: 100,
+      slidesPerView: 3,
+    },
+    700: {
+      spaceBetween: 100,
+      slidesPerView: 2,
+    },
+    600: {
+      spaceBetween: 100,
+      slidesPerView: 1,
+    },
+    500: {
+      slidesPerView: 1,
+    },
+    400: {
+      slidesPerView: 1,
+    },
+    300: {
+      slidesPerView: 1,
+    },
+    200: {
+      slidesPerView: 1,
+    },
+    100: {
+      slidesPerView: 1,
+    },
+  };
   const { data: wineDetail } = useFetch(`${BASE_URL}/wines/${id}`);
   const { data: wines } = useFetch(`${BASE_URL}/wines`);
   const randomWines = (wines) => {
@@ -190,6 +223,7 @@ function WineDetail() {
               slidesPerView={4}
               loop={true}
               modules={[Navigation]}
+              breakpoints={breakpoints}
             >
               {getRandomWines.map((wine) => (
                 <SwiperSlide key={wine._id}>

@@ -14,15 +14,18 @@ import logoImg from "../../assets/images/logo.webp";
 import userImg from "../../assets/images/user.png";
 
 import styles from "./NavBar.module.scss";
+import { BASE_URL } from "../../config/utils";
 const cx = classNames.bind(styles);
 function NavBar() {
   const { setOpenCart, openCart, amount } = useContext(CartContext);
   const { setOpenMenu } = useContext(MenuContext);
   const { user, dispatch } = useContext(AuthContext);
+ 
   const logout = () => {
     dispatch({ type: "LOGOUT" });
     sessionStorage.removeItem("accessToken");
     alert("Account is logout !!!");
+    window.location.reload()
   };
   return (
     <nav>
@@ -49,8 +52,12 @@ function NavBar() {
                 </Link>
               )}
             </li>
-            <li>Compare</li>
-            <li>My account</li>
+            <li>
+              <Link to="#">Compare</Link>
+            </li>
+            <li>
+              <Link to="#">My account</Link>
+            </li>
             <li>
               <Link to="/wish-list">Wishlist</Link>
             </li>
