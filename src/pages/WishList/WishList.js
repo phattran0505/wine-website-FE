@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 
 import { BASE_URL } from "../../config/utils";
@@ -11,19 +12,25 @@ const cx = classNames.bind(styles);
 function WishList() {
   const { user } = useContext(AuthContext);
   const [favoriteItems, setFavoriteItems] = useState([]);
+  const navigate = useNavigate();
 
   const getFavorites = async () => {
-    try {
-      const res = await fetch(`${BASE_URL}/favorite/${user._id}`, {
-        method: "get",
-      });
-      if (!res.ok) {
-        return alert(res.message);
+    if (!user || user === undefined || user === null) {
+      alert("You're not authenticated. Please sign in !!");
+      navigate("/");
+    } else {
+      try {
+        const res = await fetch(`${BASE_URL}/favorite/${user._id}`, {
+          method: "get",
+        });
+        if (!res.ok) {
+          return alert(res.message);
+        }
+        const result = await res.json();
+        setFavoriteItems(result.data);
+      } catch (error) {
+        alert(error);
       }
-      const result = await res.json();
-      setFavoriteItems(result.data);
-    } catch (error) {
-      alert(error);
     }
   };
   useEffect(() => {

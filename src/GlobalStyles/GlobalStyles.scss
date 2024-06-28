@@ -15,6 +15,18 @@
 body {
   font-family: var(--primary-font);
   cursor: default;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background-color: #303030;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #616161;
+  height: 50px;
 }
 // VARIABLES
 :root {

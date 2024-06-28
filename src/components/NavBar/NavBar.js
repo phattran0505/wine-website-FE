@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { FiPhone } from "react-icons/fi";
 import { CiLogin, CiLogout } from "react-icons/ci";
 import { LuMenu } from "react-icons/lu";
-import { IoSearchSharp } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
 import { MenuContext } from "../../contexts/MenuContext";
 import { CartContext } from "../../contexts/CartContext";
@@ -14,7 +13,6 @@ import logoImg from "../../assets/images/logo.webp";
 import userImg from "../../assets/images/user.png";
 
 import styles from "./NavBar.module.scss";
-import { BASE_URL } from "../../config/utils";
 const cx = classNames.bind(styles);
 function NavBar() {
   const { setOpenCart, openCart, amount } = useContext(CartContext);
@@ -73,9 +71,6 @@ function NavBar() {
             <img src={logoImg} alt=""></img>
           </Link>
           <div className={cx("icons")}>
-            <i className={cx("search-icon")}>
-              <IoSearchSharp />
-            </i>
             <i
               className={cx("shopping-icon")}
               onClick={() => setOpenCart(!openCart)}

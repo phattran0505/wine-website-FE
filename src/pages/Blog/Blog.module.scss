@@ -97,6 +97,16 @@
   .blog-section {
     .blog-list {
       padding: 50px 20px 100px;
+      .blog-container {
+        .blog-image {
+          img {
+            aspect-ratio:  1200/800;
+          }
+        }
+      }
+    }
+    .pagination {
+      padding: 0 20px 50px;
     }
   }
 }

@@ -25,6 +25,7 @@
 
 @media screen and (max-width:767px) {
     .product-container {
+        padding: 50px 40px;
         .product-list {
             grid-template-columns: repeat(1,1fr);
         }

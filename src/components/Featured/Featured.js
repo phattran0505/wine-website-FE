@@ -1,11 +1,11 @@
+import { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 
 import { BASE_URL } from "../../config/utils";
 import SubTitle from "../../shared/SubTitle/SubTitle";
+import ProductBox from "../../shared/ProductBox/ProductBox";
 
 import styles from "./Featured.module.scss";
-import ProductBox from "../../shared/ProductBox/ProductBox";
-import { useEffect, useState } from "react";
 const cx = classNames.bind(styles);
 function Featured() {
   const [featured, setFeatured] = useState([]);

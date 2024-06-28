@@ -113,6 +113,9 @@
       padding: 100px 20px;
       .shop-content {
         padding-left: 0;
+        .filter {
+          flex-wrap: wrap;
+        }
         .wine-list {
           width: 100%;
           grid-template-columns: repeat(1, 1fr);
