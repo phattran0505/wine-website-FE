@@ -33,7 +33,6 @@ function Register() {
         body: JSON.stringify(user),
       });
       const result = await res.json();
-      console.log(result);
       if (!res.ok) {
         return alert(result.message);
       }

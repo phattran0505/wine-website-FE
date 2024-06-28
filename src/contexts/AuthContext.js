@@ -5,7 +5,6 @@ const init_state = {
     sessionStorage.getItem("user") !== undefined
       ? JSON.parse(localStorage.getItem("user"))
       : null,
-  // null,
   loading: false,
   error: null,
 };
