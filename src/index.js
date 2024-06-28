@@ -7,7 +7,6 @@ import MenuProvider from "./contexts/MenuContext";
 import CartProvider from "./contexts/CartContext";
 import FilterProvider from "./contexts/FilterContext";
 import { AuthProvider } from "./contexts/AuthContext";
-import FavoriteProvider from "./contexts/FavoritesContext";
 
 import App from "./App";
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -16,7 +15,6 @@ root.render(
     <MenuProvider>
       <CartProvider>
         <FilterProvider>
-          <FavoriteProvider>
             <BrowserRouter>
               <React.StrictMode>
                 <GlobalStyles>
@@ -24,7 +22,6 @@ root.render(
                 </GlobalStyles>
               </React.StrictMode>
             </BrowserRouter>
-          </FavoriteProvider>
         </FilterProvider>
       </CartProvider>
     </MenuProvider>
