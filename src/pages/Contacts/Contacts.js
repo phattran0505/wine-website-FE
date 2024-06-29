@@ -1,20 +1,21 @@
-import classNames from "classnames/bind";
+import { useContext, useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import classNames from "classnames/bind";
 
 import { BASE_URL } from "../../config/utils";
 import { FaMap, FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
+import { AuthContext } from "../../contexts/AuthContext";
 import Address from "../../shared/Address/Address";
 import SubTitle from "../../shared/SubTitle/SubTitle";
 import Map from "../../shared/Map/Map";
 
 import styles from "./Contacts.module.scss";
-import { useContext, useState } from "react";
-import { AuthContext } from "../../contexts/AuthContext";
 const cx = classNames.bind(styles);
 function Contacts() {
   const { user } = useContext(AuthContext);
   const location = useLocation();
+  const inputRef = useRef();
   const token = sessionStorage.getItem("accessToken");
   const [contact, setContact] = useState({
     name: "",
@@ -49,7 +50,9 @@ function Contacts() {
       alert(error);
     }
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [user]);
   return (
     <section className={cx("contact-section")}>
       <Address address={location.pathname.slice(1)} />
@@ -97,6 +100,7 @@ function Contacts() {
                 placeholder="Name"
                 id="name"
                 onChange={handleChange}
+                ref={inputRef}
               ></input>
             </div>
             <div className={cx("input-box")}>
@@ -105,6 +109,7 @@ function Contacts() {
                 placeholder="Email"
                 id="email"
                 onChange={handleChange}
+                ref={inputRef}
               ></input>
             </div>
             <div className={cx("input-box")}>
@@ -115,6 +120,7 @@ function Contacts() {
                 placeholder="Here goes your message"
                 id="message"
                 onChange={handleChange}
+                ref={inputRef}
               ></textarea>
             </div>
             <button type="submit">send message</button>

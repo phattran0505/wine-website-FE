@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -73,14 +73,15 @@ function WineDetail() {
     return shuffled.slice(0, 8);
   };
   const getRandomWines = randomWines(wines);
-
   const handleAddToCart = () => {
     if (!user || user === undefined || user === null) {
       return alert("You're not authenticated. Please sign in !!");
     }
     addToCart(wineDetail, id);
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
   return (
     <section className={cx("wine-section")}>
       <Address address={wineDetail?.name} />

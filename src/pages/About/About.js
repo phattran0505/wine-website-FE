@@ -1,3 +1,5 @@
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import classNames from "classnames/bind";
 import CountUp from "react-countup";
 
@@ -8,10 +10,10 @@ import SubTitle from "../../shared/SubTitle/SubTitle";
 import Address from "../../shared/Address/Address";
 
 import styles from "./About.module.scss";
-import { useLocation } from "react-router-dom";
 const cx = classNames.bind(styles);
 function About() {
   const location = useLocation();
+  window.scrollTo(0,0)
   return (
     <section className={cx("about-section")}>
       <Address address={location.pathname.slice(1)} />

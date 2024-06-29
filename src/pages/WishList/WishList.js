@@ -34,6 +34,7 @@ function WishList() {
     }
   };
   useEffect(() => {
+    window.scrollTo(0, 0);
     getFavorites();
   }, [user]);
   return (
