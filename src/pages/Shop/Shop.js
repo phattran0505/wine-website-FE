@@ -1,8 +1,9 @@
 import { useLocation } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 
 import { FilterContext } from "../../contexts/FilterContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import { BASE_URL } from "../../config/utils";
 import { IoIosClose } from "react-icons/io";
 import useFetch from "../../hooks/useFetch";
@@ -18,6 +19,7 @@ function Shop() {
   const [filterWines, setFilterWines] = useState([]);
   const { size, age, setSize, setAge, values, setValues, MIN, MAX } =
     useContext(FilterContext);
+  const { user } = useContext(AuthContext);
   const { data: wines } = useFetch(`${BASE_URL}/wines`);
   const fetchDB = async () => {
     try {
@@ -31,6 +33,10 @@ function Shop() {
       alert(error);
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [user]);
   return (
     <section className={cx("shop-section")}>
       <Address address={location.pathname.slice(1)} />
