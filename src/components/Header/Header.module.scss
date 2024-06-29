@@ -102,6 +102,7 @@ header {
       }
     }
   }
+
 }
 
 // Tablet
@@ -131,32 +132,29 @@ header {
   }
 }
 
-
-
-@media screen and (max-width:767px) {
-header {
-  .slide-container{
-    .slide-content {
-      padding: 100px 20px 0;
-      .title {
-        h1 {
-          font-size: 29px;
-          line-height: 60px;
+@media screen and (max-width: 767px) {
+  header {
+    .slide-container {
+      .slide-content {
+        padding: 100px 20px 0;
+        .title {
+          h1 {
+            font-size: 29px;
+            line-height: 60px;
+          }
+        }
+        .desc {
+          width: 100%;
+          font-size: 15px;
+          line-height: 1.5;
+        }
+        .discount {
+          font-size: 27px;
         }
       }
-      .desc {
-        width: 100%;
-        font-size: 15px;
-        line-height: 1.5;
-      }
-      .discount {
-        font-size: 27px;
-      }
+    }
+    .slide-buttons {
+      display: none;
     }
   }
-  .slide-buttons {
-    display: none;
-  }
-}
-
 }

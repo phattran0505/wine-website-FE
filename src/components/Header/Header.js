@@ -2,26 +2,33 @@ import classNames from "classnames/bind";
 
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import { GoChevronRight, GoChevronLeft} from "react-icons/go";
+import { Navigation, Autoplay, EffectFade } from "swiper/modules";
+import { GoChevronRight, GoChevronLeft } from "react-icons/go";
 import { slideDatas } from "../../assets/data/Data";
 import lineImg from "../../assets/images/slider-lines.webp";
 
 import "swiper/scss";
 import "swiper/scss/navigation";
+import "swiper/scss/autoplay";
+
 import styles from "./Header.module.scss";
 const cx = classNames.bind(styles);
 function Header() {
   return (
     <header>
       <Swiper
-        modules={[Navigation]}
+        modules={[Navigation, Autoplay, EffectFade]}
         slidesPerView={1}
         navigation={{ prevEl: ".prev-button", nextEl: ".next-button" }}
         loop={true}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
+        speed={2000}
       >
         {slideDatas?.map((data, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={index} className={cx("slide")}>
             <div className={cx("slide-container")}>
               <div className={cx("slide-content")}>
                 <div className={cx("title")}>

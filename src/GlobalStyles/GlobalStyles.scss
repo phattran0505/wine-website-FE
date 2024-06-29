@@ -124,6 +124,17 @@ a.active {
   width: 100%;
   height: 100%;
 }
+// .swiper-slide-active {
+//   .slide-container {
+//     opacity: 1;
+//     transition: 1s ease-in-out;
+//   }
+// }
+// .swiper-slide {
+//   .slide-container {
+//     opacity: 0;
+//   }
+// }
 .swiper-pagination {
   width: calc(100% - 30px) !important;
   bottom: 0 !important;
