@@ -284,3 +284,24 @@
     }
   }
 }
+
+@media screen and (max-width: 767px) {
+  .wine-section {
+    .wine-container {
+      .wine-info {
+        .buttons {
+          flex-wrap: wrap;
+        }
+      }
+    }
+    .wine-detail {
+      .wine-options {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 50px;
+        row-gap: 10px;
+      }
+    }
+  }
+}

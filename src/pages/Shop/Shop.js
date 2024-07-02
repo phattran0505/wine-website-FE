@@ -16,16 +16,21 @@ const cx = classNames.bind(styles);
 
 function Shop() {
   const location = useLocation();
+  const { user } = useContext(AuthContext);
+  const { data: wines } = useFetch(`${BASE_URL}/wines`);
   const [filterWines, setFilterWines] = useState([]);
   const { size, age, setSize, setAge, values, setValues, MIN, MAX } =
     useContext(FilterContext);
-  const { user } = useContext(AuthContext);
-  const { data: wines } = useFetch(`${BASE_URL}/wines`);
   const fetchDB = async () => {
     try {
       const res = await fetch(
-        `${BASE_URL}/wines/search?size=${size}&age=${age}&min=${values[0]}&max=${values[1]}`,
-        { method: "get" }
+        `${BASE_URL}/wines/search?size=${size}&age=${age}&min=${values[0]}&max=${values[1]}}`,
+        {
+          method: "get",
+          headers: {
+            "content-type": "application/json",
+          },
+        }
       );
       const result = await res.json();
       setFilterWines(result.data);
@@ -33,7 +38,11 @@ function Shop() {
       alert(error);
     }
   };
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchDB();
+  };
+  console.log(filterWines);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [user]);
@@ -86,9 +95,13 @@ function Shop() {
                 <IoIosClose />
               </div>
             </div>
-            <span className={cx("search-btn")} onClick={fetchDB}>
+            <button
+              type="submit"
+              className={cx("search-btn")}
+              onClick={handleSubmit}
+            >
               Search
-            </span>
+            </button>
           </div>
           <div className={cx("wine-list")}>
             {filterWines.length > 0
