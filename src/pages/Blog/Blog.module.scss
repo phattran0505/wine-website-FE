@@ -81,6 +81,10 @@
       border: none;
       text-transform: capitalize;
       cursor: pointer;
+      opacity: 0;
+      &.left , &.right {
+        opacity: 1;
+      }
     }
   }
 }

@@ -44,7 +44,26 @@ body {
 
   --transition: 0.5s ease;
 }
-
+.App {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+  padding: constant(safe-area-inset-top) constant(safe-area-inset-right)
+    constant(safe-area-inset-bottom) constant(safe-area-inset-left);
+}
+section {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 220px;
+}
+textarea {
+  resize: vertical;
+}
+p {
+  font-family: var(--primary-font);
+  font-size: 16px;
+  color: var(--gray-color);
+  letter-spacing: -0.3px;
+}
 a {
   color: var(--gray-color);
   transition: var(--transition);
@@ -72,19 +91,6 @@ a.btn {
   &:hover {
     border: 3px solid var(--bg-color);
   }
-}
-
-section {
-  width: 100%;
-  min-height: 100vh;
-  padding-top: 220px;
-}
-
-p {
-  font-family: var(--primary-font);
-  font-size: 16px;
-  color: var(--gray-color);
-  letter-spacing: -0.3px;
 }
 a.active {
   color: var(--primary-color);
@@ -124,17 +130,11 @@ a.active {
   width: 100%;
   height: 100%;
 }
-// .swiper-slide-active {
-//   .slide-container {
-//     opacity: 1;
-//     transition: 1s ease-in-out;
-//   }
-// }
-// .swiper-slide {
-//   .slide-container {
-//     opacity: 0;
-//   }
-// }
+
+.transition {
+  transform: rotateX(360deg);
+  transition: 0.5s ease;
+}
 .swiper-pagination {
   width: calc(100% - 30px) !important;
   bottom: 0 !important;

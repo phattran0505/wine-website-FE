@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
 import classNames from "classnames/bind";
 import CountUp from "react-countup";
 
@@ -43,7 +42,7 @@ function About() {
               start={0}
               end={225}
               delay={0}
-              enableScrollSpy={true}
+              scrollSpyOnce={true}
             ></CountUp>
           </span>
           <p>Distribution Stores</p>
@@ -54,7 +53,7 @@ function About() {
               start={0}
               end={2314}
               delay={0}
-              enableScrollSpy={true}
+              scrollSpyOnce={true}
             ></CountUp>
           </span>
           <p>Bottles in Stock</p>
@@ -65,7 +64,7 @@ function About() {
               start={0}
               end={14}
               delay={0}
-              enableScrollSpy={true}
+              scrollSpyOnce={true}
             ></CountUp>
           </span>
           <p>Kinds of Whisky</p>
@@ -76,7 +75,7 @@ function About() {
               start={0}
               end={632}
               delay={0}
-              enableScrollSpy={true}
+              scrollSpyOnce={true}
             ></CountUp>
           </span>
           <p>Brands of Beverages</p>

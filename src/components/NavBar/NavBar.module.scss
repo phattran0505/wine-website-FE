@@ -73,60 +73,72 @@ nav {
       .menu {
         font-size: 20px;
         cursor: pointer;
+        display: none;
       }
-      a {
-        padding-left: 50px;
-        // flex: 1;
-      }
-      .icons {
+      .links {
         display: flex;
         align-items: center;
-        gap: 20px;
-        font-size: 16px;
-
-        i {
-          cursor: pointer;
-          &:hover {
-            color: var(--primary-color);
-            transition: var(--transtion);
-          }
-          &.shopping-icon {
-            position: relative;
+        gap: 30px;
+        ul {
+          a {
+            padding: 10px;
+            font-family: "Playfair Display", Sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.643em;
+            letter-spacing: 0.48px;
+            text-transform: capitalize;
           }
         }
-        span {
-          position: absolute;
+        .icons {
           display: flex;
           align-items: center;
+          gap: 20px;
+          font-size: 16px;
           justify-content: center;
-          width: 15px;
-          height: 15px;
-          border-radius: 50%;
-          background-color: #36373e;
-          color: var(--white-color);
-          font-size: 12px;
-          bottom: -3px;
-          right: -10px;
-          font-style: normal;
-        }
-        .user-image {
-          width: 25px;
-          height: 25px;
-          border-radius: 50%;
-          object-fit: cover;
-        }
-        .avatar {
-          display: none;
-          user-select: none;
-          &.active {
-            display: block;
+          i {
+            cursor: pointer;
+            &:hover {
+              color: var(--primary-color);
+              transition: var(--transtion);
+            }
+            &.shopping-icon {
+              position: relative;
+            }
+          }
+          span {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background-color: #36373e;
+            color: var(--white-color);
+            font-size: 12px;
+            bottom: -3px;
+            right: -10px;
+            font-style: normal;
+          }
+          .user-image {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+          .avatar {
+            display: none;
+            user-select: none;
+            &.active {
+              display: block;
+            }
           }
         }
       }
     }
   }
 }
-
 
 // Tablet
 @media screen and (min-width: 767px) and (max-width: 1023px) {
@@ -135,7 +147,7 @@ nav {
       justify-content: center;
       flex-direction: column;
       .info {
-        display:block;
+        display: block;
         text-align: center;
         p {
           margin: 5px 0;
@@ -145,16 +157,15 @@ nav {
   }
 }
 
-
 // Phone
-@media screen and (max-width:767px) {
+@media screen and (max-width: 767px) {
   nav {
-    .top{
+    .top {
       justify-content: center;
       flex-direction: column;
       padding: 15px 20px;
       .info {
-        display:block;
+        display: block;
         text-align: center;
         p {
           margin: 5px 0;
@@ -164,9 +175,17 @@ nav {
     .bottom {
       padding: 12px 20px 50px;
       .bottom-content {
-        a {
+        .menu {
+          display: block;
+        }
+        .logo {
           img {
             width: 90%;
+          }
+        }
+        .links {
+          ul {
+            display: none;
           }
         }
       }

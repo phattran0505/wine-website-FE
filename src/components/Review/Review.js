@@ -1,19 +1,22 @@
 import classNames from "classnames/bind";
 import { useContext, useEffect, useRef, useState } from "react";
 
+import { toast } from "react-toastify";
 import { AuthContext } from "../../contexts/AuthContext";
 import { BASE_URL } from "../../config/utils";
 import { FaStar } from "react-icons/fa";
+import { toastifyError, toastifyWarn } from "../../shared/Toastify/Toastify";
+
 import ReviewBox from "../../shared/ReviewBox/ReviewBox";
 
 import styles from "./Review.module.scss";
 const cx = classNames.bind(styles);
 function Review({ name, id }) {
   const { user } = useContext(AuthContext);
-  const token = sessionStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken");
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-  const [wine,setWine] = useState([])
+  const [wine, setWine] = useState([]);
   const [reviews, setReviews] = useState([]);
   const reviewRef = useRef();
   const usernameRef = useRef();
@@ -23,25 +26,26 @@ function Review({ name, id }) {
       const res = await fetch(`${BASE_URL}/wines/${id}`, { method: "get" });
       const result = await res.json();
       if (!res.ok) {
-        alert(result.message);
+        return toastifyError(result.message);
       }
       setWine(result.data);
     } catch (error) {
-      alert(error);
+      return toastifyError(error.message);
     }
   };
   useEffect(() => {
     fetchWineDetail();
   }, [reviews]);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user || user === undefined || user === null) {
+      return toastifyWarn("You're not authenticated. Please sign in !!");
+    }
     const reviewText = reviewRef.current.value;
     const username = usernameRef.current.value;
+    const toastId = toast.loading("Loading...", { pauseOnHover: false });
     try {
-      if (!user || user === undefined || user === null) {
-        return alert("You're not authenticated. Please sign in !!")
-      }
       const reviewObj = {
         username: username,
         reviewText: reviewText,
@@ -58,17 +62,39 @@ function Review({ name, id }) {
       });
       const result = await res.json();
       if (!res.ok) {
-        return alert(result.message);
+        return toast.update(toastId, {
+          render: result.message,
+          type:"error",
+          isLoading:false,
+          autoClose:1500,
+          pauseOnHover:false
+        });
       }
-      setReviews(result.data)
-      alert("Review Submitted");
+      if (result.data) {
+        setReviews(result.data);
+        toast.update(toastId, {
+          render: "Review Submitted",
+          type: "success",
+          autoClose: 1500,
+          isLoading:false,
+          pauseOnHover: false,
+        });
+      }
     } catch (error) {
-      alert(error.message);
+      return toast.update(toastId, {
+        render: error.message,
+        type: "error",
+        autoClose: 1500,
+        isLoading:false,
+        pauseOnHover: false,
+      });
     }
   };
-  return (  
+  return (
     <div className={cx("review-container")}>
-      <h2>{wine?.reviews?.length} Reviews {name}</h2>
+      <h2>
+        {wine?.reviews?.length} Reviews {name}
+      </h2>
       <div className={cx("review-list")}>
         {wine?.reviews?.map((review, index) => (
           <ReviewBox key={index} review={review} />

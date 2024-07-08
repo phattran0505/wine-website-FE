@@ -9,11 +9,16 @@ import Contacts from "./pages/Contacts/Contacts";
 import Blog from "./pages/Blog/Blog";
 import Shop from "./pages/Shop/Shop";
 import WineDetail from "./pages/WineDetail/WineDetail";
-import CartContainer from './components/CartContainer/CartContainer'
+import CartContainer from "./components/CartContainer/CartContainer";
 import Login from "./components/Login/Login";
 import Register from "./components/Register/Register";
 import WishList from "./pages/WishList/WishList";
+import RecoveryEmail from "./pages/RecoveryEmail/RecoveryEmail";
+import ChangePassword from "./pages/ChangePassword/ChangePassword";
+import OTPInput from "./pages/OTPInput/OTPInput";
+import { ToastContainer } from "react-toastify";
 
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <div className="App">
@@ -24,14 +29,18 @@ function App() {
         <Route path="/contact" element={<Contacts />}></Route>
         <Route path="/blog" element={<Blog />}></Route>
         <Route path="/shop" element={<Shop />}></Route>
-        <Route path="/:id" element={<WineDetail />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
-        <Route path="/wish-list" element={<WishList/>}></Route>
+        <Route path="/wish-list" element={<WishList />}></Route>
+        <Route path="/recovery-email" element={<RecoveryEmail />}></Route>
+        <Route path="/change" element={<ChangePassword />}></Route>
+        <Route path="/otp" element={<OTPInput />}></Route>
+        <Route path="/:id" element={<WineDetail />}></Route>
       </Routes>
       <SubMenu />
-      <CartContainer/>
+      <CartContainer />
       <Footer />
+      <ToastContainer />
     </div>
   );
 }

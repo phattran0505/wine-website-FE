@@ -1,9 +1,13 @@
+import { toast } from "react-toastify";
 import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import classNames from "classnames/bind";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import { BASE_URL } from "../../config/utils";
+import { toastifyError } from "../../shared/Toastify/Toastify";
+
 import Address from "../../shared/Address/Address";
 
 import styles from "./Register.module.scss";
@@ -12,6 +16,7 @@ function Register() {
   const location = useLocation();
   const navigate = useNavigate();
   const { dispatch } = useContext(AuthContext);
+  const [showPass,setShowPass] = useState(false)
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -24,7 +29,23 @@ function Register() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const id = toast.loading("Loading...", { autoClose: 5000 });
     try {
+      if (
+        user.username === "" ||
+        user.email === "" ||
+        user.password === "" ||
+        user.phone === "" ||
+        user.age === ""
+      ) {
+        return toast.update(id, {
+          render: "All fields are required",
+          type: "warning",
+          isLoading: false,
+          autoClose: 1500,
+          pauseOnHover: false,
+        });
+      }
       const res = await fetch(`${BASE_URL}/auth/register`, {
         method: "post",
         headers: {
@@ -34,12 +55,27 @@ function Register() {
       });
       const result = await res.json();
       if (!res.ok) {
-        return alert(result.message);
+        return toast.update(id, {
+          render: result.message,
+          type: "warning",
+          isLoading: false,
+          autoClose: 1500,
+          pauseOnHover: false,
+        });
+      }
+      if (result.data) {
+        toast.update(id, {
+          render: result.message,
+          type: "success",
+          isLoading: false,
+          autoClose: 1500,
+          pauseOnHover: false,
+        });
       }
       dispatch({ type: "REGISTER_SUCCESS" });
       navigate("/login");
     } catch (error) {
-      alert("Error Server !!!!!");
+      return toastifyError(error.message);
     }
   };
 
@@ -68,10 +104,21 @@ function Register() {
           <div className={cx("input-box")}>
             <input
               onChange={handleChange}
-              type="password"
+              type={showPass?"text":"password"}
               placeholder="Password"
               id="password"
             ></input>
+            {showPass ? (
+              <FaEye
+                className={cx("icon-eye")}
+                onClick={() => setShowPass(!showPass)}
+              />
+            ) : (
+              <FaEyeSlash
+                className={cx("icon-eye")}
+                onClick={() => setShowPass(!showPass)}
+              />
+            )}
           </div>
           <div className={cx("input-box")}>
             <input

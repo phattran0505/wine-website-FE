@@ -10,7 +10,7 @@ import Address from "../../shared/Address/Address";
 import styles from "./Blog.module.scss";
 const cx = classNames.bind(styles);
 function Blog() {
-  const location = useLocation()
+  const location = useLocation();
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(0);
   const { data: blogs } = useFetch(`${BASE_URL}/blog?page=${page}`);
@@ -47,14 +47,14 @@ function Blog() {
         ))}
       </div>
       <div className={cx("pagination")}>
-        {pageCount - page === pageCount ? (
-          ""
-        ) : (
-          <button onClick={() => setPage(page - 1)}>
-            <FaAngleLeft />
-            prev
-          </button>
-        )}
+        <button
+          onClick={() => setPage(page - 1)}
+          className={cx(pageCount - page === pageCount ? "" : "left")}
+        >
+          <FaAngleLeft />
+          prev
+        </button>
+
         {[...Array(pageCount).keys()].map((number) => (
           <span
             key={number}
@@ -64,14 +64,14 @@ function Blog() {
             {number + 1}
           </span>
         ))}
-        {pageCount - page === 1 ? (
-          ""
-        ) : (
-          <button onClick={() => setPage(page + 1)}>
-            next
-            <FaAngleRight />
-          </button>
-        )}
+
+        <button
+          onClick={() => setPage(page + 1)}
+          className={cx(pageCount - page === 1 ? "" : "right")}
+        >
+          next
+          <FaAngleRight />
+        </button>
       </div>
     </section>
   );

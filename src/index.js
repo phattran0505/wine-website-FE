@@ -11,6 +11,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 
 import App from "./App";
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <AuthProvider>
     <MenuProvider>

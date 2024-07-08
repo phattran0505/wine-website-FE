@@ -31,7 +31,7 @@
     }
   }
   .cart-body {
-    height: 435px;
+    height: 420px;
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -116,5 +116,11 @@
 @media screen and (max-width:767px) {
   .cart-container {
     width: 100%;
+    .cart-header {
+      padding: 20px 10px;
+    }
+    .cart-footer {
+      padding: 10px;
+    }
   }
 }

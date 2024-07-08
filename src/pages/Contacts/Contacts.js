@@ -6,6 +6,11 @@ import { BASE_URL } from "../../config/utils";
 import { FaMap, FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
 import { AuthContext } from "../../contexts/AuthContext";
+import {
+  toastifyError,
+  toastifySuccess,
+  toastifyWarn,
+} from "../../shared/Toastify/Toastify";
 import Address from "../../shared/Address/Address";
 import SubTitle from "../../shared/SubTitle/SubTitle";
 import Map from "../../shared/Map/Map";
@@ -16,7 +21,7 @@ function Contacts() {
   const { user } = useContext(AuthContext);
   const location = useLocation();
   const inputRef = useRef();
-  const token = sessionStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken");
   const [contact, setContact] = useState({
     name: "",
     email: "",
@@ -31,7 +36,14 @@ function Contacts() {
     e.preventDefault();
     try {
       if (!user || user === undefined || user === null) {
-        return alert("You're not authenticated. Please sign in !!");
+        return toastifyWarn("You're not authenticated. Please sign in !!");
+      }
+      if (
+        contact.name === "" ||
+        contact.email === "" ||
+        contact.message === ""
+      ) {
+        return toastifyWarn("All fields are required");
       }
       const res = await fetch(`${BASE_URL}/contact`, {
         method: "post",
@@ -43,11 +55,11 @@ function Contacts() {
       });
       const result = await res.json();
       if (!res.ok) {
-        return alert(result.message);
+        return toastifyError(result.message);
       }
-      alert("Contact successfully !!");
+      toastifySuccess(result.message);
     } catch (error) {
-      alert(error);
+      return toastifyError(error);
     }
   };
   useEffect(() => {

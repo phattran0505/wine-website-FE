@@ -21,14 +21,9 @@
       }
       .input-box {
         width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 30px;
-        margin-bottom: 20px;
-        position: relative;
         input {
           width: 100%;
+          margin-bottom: 20px;
           padding: 10px 15px;
           font-size: 16px;
           border: none;
@@ -51,28 +46,6 @@
           text-transform: uppercase;
           font-weight: 600;
           cursor: pointer;
-        }
-        .icon-eye {
-          position: absolute;
-          right: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          cursor: pointer;
-          color: var(--white-color);
-        }
-      }
-      p {
-        width: 100%;
-        text-align: center;
-        margin-top: 20px;
-        font-size: 14px;
-        a {
-          text-transform: capitalize;
-          color: var(--primary-color);
-
-          &:hover {
-            text-decoration: underline;
-          }
         }
       }
     }

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
+import { toastifyError } from "../shared/Toastify/Toastify";
 
 const useFetch = (url) => {
   const [data, setData] = useState([]);
@@ -11,7 +12,7 @@ const useFetch = (url) => {
       const result = await res.json();
       setData(result.data);
     } catch (error) {
-      alert(error);
+      return toastifyError(error);
     }
   };
   useEffect(() => {

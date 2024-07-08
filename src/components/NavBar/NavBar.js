@@ -2,28 +2,31 @@ import { useContext } from "react";
 import classNames from "classnames/bind";
 
 import { AuthContext } from "../../contexts/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FiPhone } from "react-icons/fi";
 import { CiLogin, CiLogout } from "react-icons/ci";
 import { LuMenu } from "react-icons/lu";
 import { FaShoppingCart } from "react-icons/fa";
 import { MenuContext } from "../../contexts/MenuContext";
 import { CartContext } from "../../contexts/CartContext";
+import { toastifySuccess } from "../../shared/Toastify/Toastify";
 import logoImg from "../../assets/images/logo.webp";
 import userImg from "../../assets/images/user.png";
 
 import styles from "./NavBar.module.scss";
+import { toast } from "react-toastify";
 const cx = classNames.bind(styles);
 function NavBar() {
+  const navigate = useNavigate();
   const { setOpenCart, openCart, amount } = useContext(CartContext);
   const { setOpenMenu } = useContext(MenuContext);
   const { user, dispatch } = useContext(AuthContext);
- 
+
   const logout = () => {
     dispatch({ type: "LOGOUT" });
-    sessionStorage.removeItem("accessToken");
-    alert("Account is logout !!!");
-    window.location.reload()
+    localStorage.removeItem("accessToken");
+    navigate("/");
+    window.location.reload();
   };
   return (
     <nav>
@@ -67,19 +70,53 @@ function NavBar() {
           <div className={cx("menu")}>
             <LuMenu onClick={() => setOpenMenu(true)} />
           </div>
-          <Link to="/">
+          <Link to="/" className={cx("logo")}>
             <img src={logoImg} alt=""></img>
           </Link>
-          <div className={cx("icons")}>
-            <i
-              className={cx("shopping-icon")}
-              onClick={() => setOpenCart(!openCart)}
-            >
-              <FaShoppingCart />
-              <span>{amount}</span>
-            </i>
-            <div className={cx("avatar", user ? "active" : "")}>
-              <img src={userImg} alt="" className={cx("user-image")}></img>
+          <div className={cx("links")}>
+            <ul>
+              <NavLink
+                to="/"
+                className={(navClass) => (navClass.isActive ? "active" : "")}
+              >
+                Home
+              </NavLink>
+              <NavLink
+                to="/about"
+                className={(navClass) => (navClass.isActive ? "active" : "")}
+              >
+                About
+              </NavLink>
+              <NavLink
+                to="/blog"
+                className={(navClass) => (navClass.isActive ? "active" : "")}
+              >
+                Blog
+              </NavLink>
+              <NavLink
+                to="/shop"
+                className={(navClass) => (navClass.isActive ? "active" : "")}
+              >
+                Shop
+              </NavLink>
+              <NavLink
+                to="/contact"
+                className={(navClass) => (navClass.isActive ? "active" : "")}
+              >
+                Contacts
+              </NavLink>
+            </ul>
+            <div className={cx("icons")}>
+              <i
+                className={cx("shopping-icon")}
+                onClick={() => setOpenCart(!openCart)}
+              >
+                <FaShoppingCart />
+                <span>{amount}</span>
+              </i>
+              <div className={cx("avatar", user ? "active" : "")}>
+                <img src={userImg} alt="" className={cx("user-image")}></img>
+              </div>
             </div>
           </div>
         </div>

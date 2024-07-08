@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export const CartContext = createContext();
 function CartProvider({ children }) {
@@ -49,6 +50,10 @@ function CartProvider({ children }) {
     } else {
       setCart([...cart, newItem]);
     }
+    toast.success("The product has been added to cart", {
+      autoClose: 1500,
+      pauseOnHover: false,
+    });
   };
 
   const increaseCart = (id) => {

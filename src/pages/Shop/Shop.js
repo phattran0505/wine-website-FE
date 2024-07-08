@@ -2,10 +2,12 @@ import { useLocation } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import classNames from "classnames/bind";
 
+import { toast } from "react-toastify";
+import { IoIosArrowDown, IoIosClose } from "react-icons/io";
 import { FilterContext } from "../../contexts/FilterContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { BASE_URL } from "../../config/utils";
-import { IoIosClose } from "react-icons/io";
+import { toastifyError } from "../../shared/Toastify/Toastify";
 import useFetch from "../../hooks/useFetch";
 import Address from "../../shared/Address/Address";
 import SideBar from "../../components/SideBar/SideBar";
@@ -13,18 +15,19 @@ import ProductBox from "../../shared/ProductBox/ProductBox";
 
 import styles from "./Shop.module.scss";
 const cx = classNames.bind(styles);
-
 function Shop() {
   const location = useLocation();
   const { user } = useContext(AuthContext);
-  const { data: wines } = useFetch(`${BASE_URL}/wines`);
+  const [selectedValue, setSelectedValue] = useState("default");
+  const { data: wines } = useFetch(`${BASE_URL}/wines?type=${selectedValue}`);
   const [filterWines, setFilterWines] = useState([]);
   const { size, age, setSize, setAge, values, setValues, MIN, MAX } =
     useContext(FilterContext);
   const fetchDB = async () => {
+    const id = toast.loading("Filtering...");
     try {
       const res = await fetch(
-        `${BASE_URL}/wines/search?size=${size}&age=${age}&min=${values[0]}&max=${values[1]}}`,
+        `${BASE_URL}/wines/search?size=${size}&age=${age}&min=${values[0]}&max=${values[1]}&type=${selectedValue}`,
         {
           method: "get",
           headers: {
@@ -33,16 +36,61 @@ function Shop() {
         }
       );
       const result = await res.json();
-      setFilterWines(result.data);
+      if (!res.ok) {
+        return toast.update(id, {
+          render: result.message,
+          type: "error",
+          isLoading: false,
+          autoClose: 1500,
+        });
+      }
+      if (result) {
+        setFilterWines(result.data);
+      }
+      result.data.length > 0
+        ? toast.update(id, {
+            render: result.message,
+            type: "success",
+            isLoading: false,
+            autoClose: 1500,
+            className: "transition",
+          })
+        : toast.update(id, {
+            render: "Filter failed",
+            type: "error",
+            isLoading: false,
+            autoClose: 1500,
+          });
     } catch (error) {
-      alert(error);
+      return toastifyError(error);
     }
   };
-  const handleSubmit = (e) => {
+  const handleFilter = (e) => {
     e.preventDefault();
     fetchDB();
   };
-  console.log(filterWines);
+  const sortFunc = (type) => {
+    filterWines.sort((a, b) => {
+      if (type === "a-z" || type === "default") {
+        return a.name.localeCompare(b.name);
+      }
+      if (type === "z-a") {
+        return b.name.localeCompare(a.name);
+      }
+      if (type === "asc") {
+        return Number(a.newPrice) - Number(b.newPrice);
+      }
+      if (type === "dsc") {
+        return Number(b.newPrice) - Number(a.newPrice);
+      }
+      if (type === "popular") {
+        return b.star - a.star;
+      }
+    });
+  };
+  useEffect(() => {
+    sortFunc(selectedValue);
+  }, [selectedValue]);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [user]);
@@ -57,14 +105,17 @@ function Shop() {
           </div>
           <div className={cx("sort")}>
             <form>
-              <select>
-                <option>Default sorting</option>
-                <option>Sort by popularity</option>
-                <option>Sort by average rating</option>
-                <option>Sort by latest</option>
-                <option>Sort by price: low to high</option>
-                <option>Sort by price: high to low</option>
+              <select
+                onChange={(e) => setSelectedValue(e.target.value)}
+                value={selectedValue}
+              >
+                <option value="default">Sort A to Z</option>
+                <option value="z-a">Sort Z to A </option>
+                <option value="popular">Sort by popularity</option>
+                <option value="asc">Sort by price: low to high</option>
+                <option value="dsc">Sort by price: high to low</option>
               </select>
+              <IoIosArrowDown className={cx("arrow-icon")} />
             </form>
           </div>
           <div className={cx("filter")}>
@@ -98,7 +149,7 @@ function Shop() {
             <button
               type="submit"
               className={cx("search-btn")}
-              onClick={handleSubmit}
+              onClick={handleFilter}
             >
               Search
             </button>

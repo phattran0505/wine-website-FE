@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 
 import { BASE_URL } from "../../config/utils";
 import { AuthContext } from "../../contexts/AuthContext";
+import { toastifyWarn,toastifyError } from "../../shared/Toastify/Toastify";
 import ProductBox from "../../shared/ProductBox/ProductBox";
 
 import styles from "./WishList.module.scss";
@@ -16,8 +17,7 @@ function WishList() {
 
   const getFavorites = async () => {
     if (!user || user === undefined || user === null) {
-      alert("You're not authenticated. Please sign in !!");
-      navigate("/");
+      return toastifyWarn("You're not authenticated. Please sign in !!");
     } else {
       try {
         const res = await fetch(`${BASE_URL}/favorite/${user._id}`, {
@@ -29,7 +29,7 @@ function WishList() {
         const result = await res.json();
         setFavoriteItems(result.data);
       } catch (error) {
-        alert(error);
+        return toastifyError(error);
       }
     }
   };

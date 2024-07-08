@@ -118,13 +118,13 @@
           font-family: var(--header-font);
         }
         .first {
-          animation: first 1.5s ease forwards;
+          width: 90%;
         }
         .second {
-          animation: second 1.5s ease forwards;
+          width: 80%;
         }
         .third {
-          animation: third 1.5s ease forwards;
+          width: 70%;
         }
       }
     }
@@ -225,21 +225,6 @@
     transform: scale(1);
   }
 }
-@keyframes first {
-  to {
-    width: 90%;
-  }
-}
-@keyframes second {
-  to {
-    width: 80%;
-  }
-}
-@keyframes third {
-  to {
-    width: 70%;
-  }
-}
 
 @media screen and (min-width: 767px) and (max-width: 1023px) {
   .about-section {
@@ -276,7 +261,7 @@
       padding: 50px 20px;
     }
     .about-banner {
-      grid-template-columns: repeat(1,1fr);
+      grid-template-columns: repeat(1, 1fr);
       grid-template-rows: auto;
       padding: 60px 20px;
     }

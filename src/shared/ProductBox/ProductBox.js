@@ -12,6 +12,7 @@ import {
 import { CartContext } from "../../contexts/CartContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { BASE_URL } from "../../config/utils";
+import { toastifyWarn, toastifyError } from "../Toastify/Toastify";
 
 import styles from "./ProductBox.module.scss";
 
@@ -31,7 +32,7 @@ function ProductBox({ product, refetchData = () => {} }) {
 
   const toggleFavorites = async (id) => {
     if (!user || user === undefined || user === null) {
-      return alert("You're not authenticated. Please sign in !!");
+      return toastifyWarn("You're not authenticated. Please sign in !!");
     }
     try {
       const res = await fetch(`${BASE_URL}/favorite`, {
@@ -45,17 +46,17 @@ function ProductBox({ product, refetchData = () => {} }) {
         }),
       });
       if (!res.ok) {
-        return alert(res.message);
+        return toastifyWarn(res.message);
       }
       setHeart(!heart);
       refetchData();
     } catch (error) {
-      return alert(error);
+      return toastifyError(error);
     }
   };
   const handleAddToCart = () => {
     if (!user || user === undefined || user === null) {
-      return alert("You're not authenticated. Please sign in !!");
+      return toastifyWarn("You're not authenticated. Please sign in !!");
     } else {
       addToCart(product, product._id);
     }

@@ -1,8 +1,8 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 
 const init_state = {
   user:
-    sessionStorage.getItem("user") !== undefined
+    localStorage.getItem("user") !== undefined
       ? JSON.parse(localStorage.getItem("user"))
       : null,
   loading: false,
@@ -49,9 +49,11 @@ const AuthReducer = (state, action) => {
 };
 
 export const AuthProvider = ({ children }) => {
+  const [email, setEmail] = useState("");
   const [state, dispatch] = useReducer(AuthReducer, init_state);
+  const [expiresAt, setExpiresAt] = useState();
   useEffect(() => {
-    sessionStorage.setItem("user", JSON.stringify(state.user));
+    localStorage.setItem("user", JSON.stringify(state.user));
   }, [state.user]);
 
   return (
@@ -61,6 +63,10 @@ export const AuthProvider = ({ children }) => {
         error: state.error,
         loading: state.loading,
         dispatch,
+        email,
+        setEmail,
+        expiresAt,
+        setExpiresAt,
       }}
     >
       {children}
