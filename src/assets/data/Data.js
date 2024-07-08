@@ -216,7 +216,7 @@ export const testimonials = [
   },
   {
     name: "Jane Green",
-    job: "desinger",
+    job: "Desinger",
     avatar: avatar2,
     desc: "Jane joined our team in 2013 and has recommended herself as one of the best employees always ready to help. Besides she is a talented credible manager she is also an experienced seamstress. She has…",
   },

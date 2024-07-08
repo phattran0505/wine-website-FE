@@ -21,10 +21,10 @@ function Header() {
         slidesPerView={1}
         navigation={{ prevEl: ".prev-button", nextEl: ".next-button" }}
         loop={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
+        // autoplay={{
+        //   delay: 3000,
+        //   disableOnInteraction: false,
+        // }}
         speed={2000}
       >
         {slideDatas?.map((data, index) => (

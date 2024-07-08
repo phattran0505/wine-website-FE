@@ -16,7 +16,7 @@ function Register() {
   const location = useLocation();
   const navigate = useNavigate();
   const { dispatch } = useContext(AuthContext);
-  const [showPass,setShowPass] = useState(false)
+  const [showPass, setShowPass] = useState(false);
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -91,6 +91,7 @@ function Register() {
               type="text"
               placeholder="UserName"
               id="username"
+              required
             ></input>
           </div>
           <div className={cx("input-box")}>
@@ -99,14 +100,16 @@ function Register() {
               type="email"
               placeholder="Email"
               id="email"
+              required
             ></input>
           </div>
           <div className={cx("input-box")}>
             <input
               onChange={handleChange}
-              type={showPass?"text":"password"}
+              type={showPass ? "text" : "password"}
               placeholder="Password"
               id="password"
+              required
             ></input>
             {showPass ? (
               <FaEye
@@ -126,12 +129,15 @@ function Register() {
               type="text"
               placeholder="Phone"
               id="phone"
+              required
             ></input>
             <input
               onChange={handleChange}
               type="number"
               placeholder="Age"
               id="age"
+              min={0}
+              required
             ></input>
           </div>
           <div className={cx("input-box")}>

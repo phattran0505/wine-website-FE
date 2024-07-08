@@ -20,7 +20,7 @@ function Blog() {
     const pages = Math.ceil(blogCount / 3);
     setPageCount(pages);
     window.scrollTo(0, 0);
-  }, [page, blogs]);
+  }, [page, pageCount, blogCount]);
   return (
     <section className={cx("blog-section")}>
       <Address address={location.pathname.slice(1)} />
@@ -37,7 +37,7 @@ function Blog() {
               <span className={cx("category")}>
                 In <Link to="#">{blog.category}</Link>
               </span>
-              <span className={cx("date")}>Poste {blog.date}</span>
+              <span className={cx("date")}>Posted in {blog.date}</span>
             </div>
             <figure className={cx("blog-image")}>
               <img src={blog.image} alt="" width="1160" height="508"></img>

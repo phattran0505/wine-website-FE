@@ -3,7 +3,6 @@ import classNames from "classnames/bind";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { testimonials } from "../../assets/data/Data";
 import SubTitle from "../../shared/SubTitle/SubTitle";
-import quotesImg from "../../assets/images/quotes.webp";
 
 import styles from "./Testimonial.module.scss";
 const cx = classNames.bind(styles);
