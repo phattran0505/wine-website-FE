@@ -67,6 +67,7 @@ p {
 a {
   color: var(--gray-color);
   transition: var(--transition);
+  text-align: center;
   &:hover {
     color: var(--primary-color);
   }
