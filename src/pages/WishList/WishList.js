@@ -15,21 +15,17 @@ function WishList() {
   const [favoriteItems, setFavoriteItems] = useState([]);
 
   const getFavorites = async () => {
-    if (!user || user === undefined || user === null) {
-      return toastifyWarn("You're not authenticated. Please sign in !!");
-    } else {
-      try {
-        const res = await fetch(`${BASE_URL}/favorite/${user._id}`, {
-          method: "get",
-        });
-        if (!res.ok) {
-          return alert(res.message);
-        }
-        const result = await res.json();
-        setFavoriteItems(result.data);
-      } catch (error) {
-        return toastifyError(error);
+    try {
+      const res = await fetch(`${BASE_URL}/favorite/${user._id}`, {
+        method: "get",
+      });
+      if (!res.ok) {
+        return alert(res.message);
       }
+      const result = await res.json();
+      setFavoriteItems(result.data);
+    } catch (error) {
+      return toastifyError(error);
     }
   };
   useEffect(() => {
