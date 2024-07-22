@@ -6,8 +6,8 @@ import GlobalStyles from "./GlobalStyles/GlobalStyles";
 import MenuProvider from "./contexts/MenuContext";
 import CartProvider from "./contexts/CartContext";
 import FilterProvider from "./contexts/FilterContext";
+import RefreshProvider from "./contexts/RefreshContext";
 import { AuthProvider } from "./contexts/AuthContext";
-
 
 import App from "./App";
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -18,11 +18,13 @@ root.render(
       <CartProvider>
         <FilterProvider>
           <BrowserRouter>
+            <RefreshProvider>
               <React.StrictMode>
                 <GlobalStyles>
                   <App />
                 </GlobalStyles>
               </React.StrictMode>
+            </RefreshProvider>
           </BrowserRouter>
         </FilterProvider>
       </CartProvider>

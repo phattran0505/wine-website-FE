@@ -3,7 +3,7 @@ import classNames from "classnames/bind";
 
 import { BASE_URL } from "../../config/utils";
 import { AuthContext } from "../../contexts/AuthContext";
-import { toastifyWarn, toastifyError } from "../../shared/Toastify/Toastify";
+import { toastifyError } from "../../shared/Toastify/Toastify";
 import { FaRegHeart } from "react-icons/fa";
 import ProductBox from "../../shared/ProductBox/ProductBox";
 

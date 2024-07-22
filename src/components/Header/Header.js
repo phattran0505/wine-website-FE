@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 
 import { Link } from "react-router-dom";
@@ -14,23 +15,34 @@ import "swiper/scss/autoplay";
 import styles from "./Header.module.scss";
 const cx = classNames.bind(styles);
 function Header() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const handleSlideChange = (swiper) => {
+    setActiveIndex(swiper.realIndex);
+  };
   return (
     <header>
       <Swiper
+        // onSliderMove={handleSlideChange}
+        onSlideChange={handleSlideChange}
         modules={[Navigation, Autoplay, EffectFade]}
         slidesPerView={1}
         navigation={{ prevEl: ".prev-button", nextEl: ".next-button" }}
         loop={true}
-        // autoplay={{
-        //   delay: 3000,
-        //   disableOnInteraction: false,
-        // }}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
         speed={2000}
       >
         {slideDatas?.map((data, index) => (
-          <SwiperSlide key={index} className={cx("slide")}>
+          <SwiperSlide key={index}>
             <div className={cx("slide-container")}>
-              <div className={cx("slide-content")}>
+              <div
+                className={cx(
+                  "slide-content",
+                  activeIndex === index ? "active" : ""
+                )}
+              >
                 <div className={cx("title")}>
                   <h1>{data.title}</h1>
                 </div>

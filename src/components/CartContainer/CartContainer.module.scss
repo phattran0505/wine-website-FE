@@ -1,5 +1,9 @@
 .cart-container {
   position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  flex-direction: column;
   right: 0;
   top: 0;
   height: 100vh;
@@ -8,7 +12,6 @@
   background-color: #151515;
   transition: var(--transition);
 
-  //   box-shadow: 0 0 10px 10px var(--gray-color);
   &.close {
     right: -100%;
     transition: var(--transition);
@@ -31,7 +34,7 @@
     }
   }
   .cart-body {
-    height: 420px;
+    height: auto;
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -40,6 +43,7 @@
     }
   }
   .cart-footer {
+    width: 100%;
     border-top: 1px solid var(--gray-color);
     color: var(--gray-color);
     padding: 10px 20px;

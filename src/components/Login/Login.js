@@ -66,9 +66,8 @@ function Login() {
           pauseOnHover: false,
         });
       }
-
       setUser(result);
-      localStorage.setItem("accessToken", result.token);
+      localStorage.setItem("accessToken", result.accessToken);
       navigate("/");
     } catch (error) {
       dispatch({ type: "LOGIN_FAILED", payload: error.message });

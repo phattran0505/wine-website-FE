@@ -20,6 +20,7 @@ const cx = classNames.bind(styles);
 function ProductBox({ product, refetchData = () => {} }) {
   const { addToCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
+  const token = localStorage.getItem("accessToken");
   const [heart, setHeart] = useState(product.isFavorite);
   const words = product.name.split(" ");
   const name = words.slice(0, 4).join(" ");
@@ -39,6 +40,7 @@ function ProductBox({ product, refetchData = () => {} }) {
         method: "post",
         headers: {
           "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           userId: user._id,

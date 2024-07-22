@@ -6,6 +6,7 @@ import { BASE_URL } from "../../config/utils";
 import { FaMap, FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
 import { AuthContext } from "../../contexts/AuthContext";
+import { RefreshContext } from "../../contexts/RefreshContext";
 import {
   toastifyError,
   toastifySuccess,
@@ -19,9 +20,10 @@ import styles from "./Contacts.module.scss";
 const cx = classNames.bind(styles);
 function Contacts() {
   const { user } = useContext(AuthContext);
+  const { handleRefreshToken } = useContext(RefreshContext);
+  // const token = localStorage.getItem("accessToken");
   const location = useLocation();
   const inputRef = useRef();
-  const token = localStorage.getItem("accessToken");
   const [contact, setContact] = useState({
     name: "",
     email: "",
@@ -35,9 +37,6 @@ function Contacts() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (!user || user === undefined || user === null) {
-        return toastifyWarn("You're not authenticated. Please sign in !!");
-      }
       if (
         contact.name === "" ||
         contact.email === "" ||
@@ -45,11 +44,12 @@ function Contacts() {
       ) {
         return toastifyWarn("All fields are required");
       }
+      const accessToken = await handleRefreshToken()
       const res = await fetch(`${BASE_URL}/contact`, {
         method: "post",
         headers: {
           "content-type": "application/json",
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify(contact),
       });

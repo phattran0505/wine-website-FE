@@ -39,9 +39,6 @@ function Review({ name, id }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!user || user === undefined || user === null) {
-      return toastifyWarn("You're not authenticated. Please sign in !!");
-    }
     const reviewText = reviewRef.current.value;
     const username = usernameRef.current.value;
     const toastId = toast.loading("Loading...", { pauseOnHover: false });

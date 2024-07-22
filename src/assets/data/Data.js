@@ -4,18 +4,21 @@ import wine3Bg from "../images/wine-images/wine-3-bg.jpg";
 import wine2Bg from "../images/wine-images/wine-2-bg.jpg";
 export const slideDatas = [
   {
+    id:0,
     title: "Beverages for Connoisseurs",
     desc: "Enjoy these fine spirits and keep your sunny side up! Refined taste of our exclusive beverages is a real joy for those who value good alcohol from world-class brands!",
     discount: 15,
     image: wine1Bg,
   },
   {
+    id:1,
     title: "Beverages for Connoisseurs",
     desc: "Enjoy these fine spirits and keep your sunny side up! Refined taste of our exclusive beverages is a real joy for those who value good alcohol from world-class brands!",
     discount: 15,
     image: wine2Bg,
   },
   {
+    id:2,
     title: "Beverages for Connoisseurs",
     desc: "Enjoy these fine spirits and keep your sunny side up! Refined taste of our exclusive beverages is a real joy for those who value good alcohol from world-class brands!",
     discount: 15,
