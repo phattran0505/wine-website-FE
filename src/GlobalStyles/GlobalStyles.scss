@@ -64,6 +64,29 @@ p {
   color: var(--gray-color);
   letter-spacing: -0.3px;
 }
+table,
+th,
+td {
+  border-collapse: collapse;
+  border: 1px solid var(--white-color);
+  color: var(--text-color);
+}
+table {
+  tbody {
+    tr {
+      max-width: 180px;
+      th {
+        padding: 10px 0;
+        text-transform: capitalize;
+        width: 180px;
+      }
+      td {
+        padding: 10px;
+        text-align: center;
+      }
+    }
+  }
+}
 a {
   color: var(--gray-color);
   transition: var(--transition);

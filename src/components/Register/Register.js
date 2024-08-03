@@ -1,13 +1,22 @@
-import { toast } from "react-toastify";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useDispatch,useSelector } from "react-redux";
+import {
+  registerStart,
+  registerSuccess,
+  registerError,
+} from "../../redux/authSlice";
 import classNames from "classnames/bind";
+import axios from "axios";
+import ClipLoader from "react-spinners/ClipLoader";
 
-import { AuthContext } from "../../contexts/AuthContext";
+import {
+  toastifyError,
+  toastifyWarn,
+  toastifySuccess,
+} from "../../shared/Toastify/Toastify";
 import { BASE_URL } from "../../config/utils";
-import { toastifyError } from "../../shared/Toastify/Toastify";
-
 import Address from "../../shared/Address/Address";
 
 import styles from "./Register.module.scss";
@@ -15,7 +24,8 @@ const cx = classNames.bind(styles);
 function Register() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { dispatch } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const loading = useSelector(state=>state?.auth?.isLoading)
   const [showPass, setShowPass] = useState(false);
   const [user, setUser] = useState({
     username: "",
@@ -29,7 +39,7 @@ function Register() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = toast.loading("Loading...", { autoClose: 5000 });
+    dispatch(registerStart());
     try {
       if (
         user.username === "" ||
@@ -38,44 +48,26 @@ function Register() {
         user.phone === "" ||
         user.age === ""
       ) {
-        return toast.update(id, {
-          render: "All fields are required",
-          type: "warning",
-          isLoading: false,
-          autoClose: 1500,
-          pauseOnHover: false,
-        });
+        return toastifyWarn("All fields are required");
       }
-      const res = await fetch(`${BASE_URL}/auth/register`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        return toast.update(id, {
-          render: result.message,
-          type: "warning",
-          isLoading: false,
-          autoClose: 1500,
-          pauseOnHover: false,
-        });
-      }
+      const res = await axios.post(
+        `${BASE_URL}/auth/register`,
+        JSON.stringify(user),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const result = res.data;
       if (result.data) {
-        toast.update(id, {
-          render: result.message,
-          type: "success",
-          isLoading: false,
-          autoClose: 1500,
-          pauseOnHover: false,
-        });
+        toastifySuccess(result.message);
       }
-      dispatch({ type: "REGISTER_SUCCESS" });
+      dispatch(registerSuccess());
       navigate("/login");
     } catch (error) {
-      return toastifyError(error.message);
+      dispatch(registerError());
+      toastifyError(error.response?.data?.message);
     }
   };
 
@@ -128,6 +120,7 @@ function Register() {
               onChange={handleChange}
               type="text"
               placeholder="Phone"
+              minLength={10}
               id="phone"
               required
             ></input>
@@ -136,12 +129,24 @@ function Register() {
               type="number"
               placeholder="Age"
               id="age"
-              min={0}
+              min={18}
               required
             ></input>
           </div>
           <div className={cx("input-box")}>
-            <button type="submit">Register</button>
+            <button type="submit">
+              {loading ? (
+                <ClipLoader
+                  color="var(--dark-color)"
+                  cssOverride={{}}
+                  loading
+                  size={13}
+                  speedMultiplier={1}
+                />
+              ) : (
+                "Register"
+              )}
+            </button>
           </div>
           <p>
             Already have an account? <Link to="/login">login</Link>

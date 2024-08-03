@@ -1,32 +1,57 @@
-import { useContext } from "react";
-import classNames from "classnames/bind";
-
-import { AuthContext } from "../../contexts/AuthContext";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useContext } from "react";
 import { FiPhone } from "react-icons/fi";
 import { CiLogin, CiLogout } from "react-icons/ci";
 import { LuMenu } from "react-icons/lu";
 import { FaShoppingCart } from "react-icons/fa";
+import { useSelector, useDispatch } from "react-redux";
+import axios from "axios";
+import classNames from "classnames/bind";
+
+import { BASE_URL } from "../../config/utils";
+import {
+  logoutStart,
+  logoutFailed,
+  logoutSuccess,
+} from "../../redux/authSlice";
+import { toastifyError } from "../../shared/Toastify/Toastify";
 import { MenuContext } from "../../contexts/MenuContext";
 import { CartContext } from "../../contexts/CartContext";
-import { toastifySuccess } from "../../shared/Toastify/Toastify";
+import { AuthContext } from "../../contexts/AuthContext";
 import logoImg from "../../assets/images/logo.webp";
 import userImg from "../../assets/images/user.png";
 
 import styles from "./NavBar.module.scss";
-import { toast } from "react-toastify";
 const cx = classNames.bind(styles);
 function NavBar() {
   const navigate = useNavigate();
-  const { setOpenCart, openCart, amount } = useContext(CartContext);
+  const { setOpenCart, openCart, products } = useContext(CartContext);
   const { setOpenMenu } = useContext(MenuContext);
-  const { user, dispatch } = useContext(AuthContext);
-
-  const logout = () => {
-    dispatch({ type: "LOGOUT" });
-    localStorage.removeItem("accessToken");
-    navigate("/");
-    window.location.reload();
+  const { compareList } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth?.user);
+  const logout = async () => {
+    dispatch(logoutStart());
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/auth/logout`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      dispatch(logoutSuccess());
+      const result = res.data;
+      if (result.data) {
+        navigate("/");
+      }
+    } catch (error) {
+      dispatch(logoutFailed());
+      toastifyError(error.respons?.data?.message);
+    }
   };
   return (
     <nav>
@@ -54,10 +79,13 @@ function NavBar() {
               )}
             </li>
             <li>
-              <Link to="#">Compare</Link>
+              <Link to="/compare">
+                Compare{" "}
+                {compareList.length > 0 ? `(${compareList.length})` : ""}
+              </Link>
             </li>
             <li>
-              <Link to="#">My account</Link>
+              <Link to="/account">My account</Link>
             </li>
             <li>
               <Link to="/wish-list">Wishlist</Link>
@@ -70,7 +98,14 @@ function NavBar() {
           <div className={cx("menu")}>
             <LuMenu onClick={() => setOpenMenu(true)} />
           </div>
-          <Link to="/" className={cx("logo")}>
+          <Link
+            to="/"
+            className={cx("logo")}
+            onClick={(e) => {
+              e.preventDefault();
+              window.location.href = "/";
+            }}
+          >
             <img src={logoImg} alt=""></img>
           </Link>
           <div className={cx("links")}>
@@ -112,10 +147,14 @@ function NavBar() {
                 onClick={() => setOpenCart(!openCart)}
               >
                 <FaShoppingCart />
-                <span>{amount}</span>
+                <span>{products.length}</span>
               </i>
-              <div className={cx("avatar", user ? "active" : "")}>
-                <img src={userImg} alt="" className={cx("user-image")}></img>
+              <div className={cx("avatar")}>
+                <img
+                  src={user?.avatar ? user?.avatar : userImg}
+                  alt=""
+                  className={cx("user-image")}
+                ></img>
               </div>
             </div>
           </div>

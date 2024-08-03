@@ -127,13 +127,6 @@ nav {
             border-radius: 50%;
             object-fit: cover;
           }
-          .avatar {
-            display: none;
-            user-select: none;
-            &.active {
-              display: block;
-            }
-          }
         }
       }
     }

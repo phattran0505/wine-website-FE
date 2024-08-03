@@ -1,17 +1,18 @@
-import { useContext, useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import classNames from "classnames/bind";
-
-import { BASE_URL } from "../../config/utils";
+import { useSelector } from "react-redux";
 import { FaMap, FaPhoneAlt } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
-import { AuthContext } from "../../contexts/AuthContext";
-import { RefreshContext } from "../../contexts/RefreshContext";
+import classNames from "classnames/bind";
+import ClipLoader from "react-spinners/ClipLoader";
+
+import { BASE_URL } from "../../config/utils";
 import {
   toastifyError,
   toastifySuccess,
   toastifyWarn,
 } from "../../shared/Toastify/Toastify";
+import useAxiosJWT from "../../config/axiosConfig";
 import Address from "../../shared/Address/Address";
 import SubTitle from "../../shared/SubTitle/SubTitle";
 import Map from "../../shared/Map/Map";
@@ -19,9 +20,11 @@ import Map from "../../shared/Map/Map";
 import styles from "./Contacts.module.scss";
 const cx = classNames.bind(styles);
 function Contacts() {
-  const { user } = useContext(AuthContext);
-  const { handleRefreshToken } = useContext(RefreshContext);
-  // const token = localStorage.getItem("accessToken");
+  const user = useSelector((state) => state.auth?.user);
+
+  const getAxiosJWT = useAxiosJWT();
+  const axiosJWT = getAxiosJWT();
+
   const location = useLocation();
   const inputRef = useRef();
   const [contact, setContact] = useState({
@@ -29,6 +32,7 @@ function Contacts() {
     email: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setContact((prev) => ({ ...prev, [e.target.id]: e.target.value }));
@@ -36,6 +40,7 @@ function Contacts() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       if (
         contact.name === "" ||
@@ -44,22 +49,25 @@ function Contacts() {
       ) {
         return toastifyWarn("All fields are required");
       }
-      const accessToken = await handleRefreshToken()
-      const res = await fetch(`${BASE_URL}/contact`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify(contact),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        return toastifyError(result.message);
+      const res = await axiosJWT.post(
+        `${BASE_URL}/contact`,
+        JSON.stringify(contact),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
+      const result = res.data;
+      if (res.status >= 200 && res.status < 300) {
+        setLoading(false);
+        toastifySuccess(result.message);
       }
-      toastifySuccess(result.message);
     } catch (error) {
-      return toastifyError(error);
+      setLoading(false);
+      toastifyError(error.response?.data?.message);
     }
   };
   useEffect(() => {
@@ -135,7 +143,19 @@ function Contacts() {
                 ref={inputRef}
               ></textarea>
             </div>
-            <button type="submit">send message</button>
+            <button type="submit">
+              {loading ? (
+                <ClipLoader
+                  color="var(--dark-color)"
+                  cssOverride={{}}
+                  loading
+                  size={13}
+                  speedMultiplier={1}
+                />
+              ) : (
+                "send message"
+              )}
+            </button>
           </form>
         </div>
       </div>

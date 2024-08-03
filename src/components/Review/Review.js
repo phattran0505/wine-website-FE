@@ -1,92 +1,62 @@
-import classNames from "classnames/bind";
-import { useContext, useEffect, useRef, useState } from "react";
-
-import { toast } from "react-toastify";
-import { AuthContext } from "../../contexts/AuthContext";
-import { BASE_URL } from "../../config/utils";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { FaStar } from "react-icons/fa";
-import { toastifyError, toastifyWarn } from "../../shared/Toastify/Toastify";
+import { toastifySuccess, toastifyError } from "../../shared/Toastify/Toastify";
+import classNames from "classnames/bind";
+import ClipLoader from "react-spinners/ClipLoader";
 
+import { BASE_URL } from "../../config/utils";
+import useAxios from "../../hooks/useAxios";
+import useAxiosJWT from "../../config/axiosConfig";
 import ReviewBox from "../../shared/ReviewBox/ReviewBox";
 
 import styles from "./Review.module.scss";
 const cx = classNames.bind(styles);
 function Review({ name, id }) {
-  const { user } = useContext(AuthContext);
-  const token = localStorage.getItem("accessToken");
-  const [rating, setRating] = useState(0);
-  const [hover, setHover] = useState(0);
-  const [wine, setWine] = useState([]);
-  const [reviews, setReviews] = useState([]);
+  const { data: wine, refetch } = useAxios(`${BASE_URL}/wines/${id}`);
+  const user = useSelector((state) => state.auth?.user);
   const reviewRef = useRef();
   const usernameRef = useRef();
-
-  const fetchWineDetail = async () => {
-    try {
-      const res = await fetch(`${BASE_URL}/wines/${id}`, { method: "get" });
-      const result = await res.json();
-      if (!res.ok) {
-        return toastifyError(result.message);
-      }
-      setWine(result.data);
-    } catch (error) {
-      return toastifyError(error.message);
-    }
-  };
-  useEffect(() => {
-    fetchWineDetail();
-  }, [reviews]);
-
+  const getAxiosJWT = useAxiosJWT();
+  const axiosJWT = getAxiosJWT();
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const reviewText = reviewRef.current.value;
     const username = usernameRef.current.value;
-    const toastId = toast.loading("Loading...", { pauseOnHover: false });
+    setLoading(true);
     try {
       const reviewObj = {
         username: username,
         reviewText: reviewText,
         rating: rating,
       };
-      const res = await fetch(`${BASE_URL}/reviews/${id}`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        credentials: "include",
-        body: JSON.stringify(reviewObj),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        return toast.update(toastId, {
-          render: result.message,
-          type:"error",
-          isLoading:false,
-          autoClose:1500,
-          pauseOnHover:false
-        });
-      }
+      const res = await axiosJWT.post(
+        `${BASE_URL}/reviews/${id}`,
+        JSON.stringify(reviewObj),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
+      const result = res.data;
       if (result.data) {
-        setReviews(result.data);
-        toast.update(toastId, {
-          render: "Review Submitted",
-          type: "success",
-          autoClose: 1500,
-          isLoading:false,
-          pauseOnHover: false,
-        });
+        setLoading(false);
+        toastifySuccess("Review Submitted");
       }
     } catch (error) {
-      return toast.update(toastId, {
-        render: error.message,
-        type: "error",
-        autoClose: 1500,
-        isLoading:false,
-        pauseOnHover: false,
-      });
+      setLoading(false);
+      toastifyError(error.response?.data?.message);
     }
   };
+  useEffect(() => {
+    refetch();
+  }, []);
   return (
     <div className={cx("review-container")}>
       <h2>
@@ -128,7 +98,19 @@ function Review({ name, id }) {
           <textarea cols={45} rows={8} ref={reviewRef}></textarea>
         </div>
         <div className={cx("input-box")}>
-          <button type="submit">submit</button>
+          <button type="submit">
+            {loading ? (
+              <ClipLoader
+                color="var(--dark-color)"
+                cssOverride={{}}
+                loading
+                size={13}
+                speedMultiplier={1}
+              />
+            ) : (
+              "submit"
+            )}
+          </button>
         </div>
       </form>
     </div>

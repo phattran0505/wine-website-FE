@@ -11,7 +11,7 @@
   width: 400px;
   background-color: #151515;
   transition: var(--transition);
-
+  z-index: 1000;
   &.close {
     right: -100%;
     transition: var(--transition);
@@ -34,10 +34,11 @@
     }
   }
   .cart-body {
+    width: 100%;
     height: auto;
     overflow-y: auto;
     overflow-x: hidden;
-
+    flex: 1;
     &::-webkit-scrollbar{
       display: none;
     }
@@ -105,14 +106,6 @@
 }
 
 
-
-// Tablet
-
-@media screen and (min-width: 767px) and (max-width: 1023px) {
-  .cart-container{
-    
-  }
-}
 
 
 // Phone

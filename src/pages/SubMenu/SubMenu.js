@@ -9,7 +9,6 @@ import styles from "./SubMenu.module.scss";
 const cx = classNames.bind(styles);
 function SubMenu() {
   const { openMenu, setOpenMenu } = useContext(MenuContext);
-
   return (
     <div className={cx("sub-section", openMenu ? "active" : "")}>
       <div className={cx("sub-menu")}>

@@ -1,75 +1,52 @@
-import { createContext, useEffect, useReducer, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import useAxiosJWT from "../config/axiosConfig";
 
-const init_state = {
-  user:
-    localStorage.getItem("user") !== undefined
-      ? JSON.parse(localStorage.getItem("user"))
-      : null,
-  loading: false,
-  error: null,
-};
+import { toastifyError } from "../shared/Toastify/Toastify";
+import { BASE_URL } from "../config/utils";
 
-export const AuthContext = createContext(init_state);
+export const AuthContext = createContext();
 
-const AuthReducer = (state, action) => {
-  switch (action.type) {
-    case "LOGIN_START":
-      return {
-        user: null,
-        loading: false,
-        error: null,
-      };
-    case "LOGIN_SUCCESS":
-      return {
-        user: action.payload,
-        loading: false,
-        error: null,
-      };
-    case "LOGIN_FAILURE":
-      return {
-        user: null,
-        loading: false,
-        error: action.payload,
-      };
-    case "REGISTER_SUCCESS":
-      return {
-        user: null,
-        loading: false,
-        error: null,
-      };
-    case "LOGOUT":
-      return {
-        user: null,
-        loading: false,
-        error: null,
-      };
-    default:
-      return state;
-  }
-};
-
-export const AuthProvider = ({ children }) => {
-  const [email, setEmail] = useState("");
-  const [state, dispatch] = useReducer(AuthReducer, init_state);
+function AuthProvider({ children }) {
+  const [compareList, setCompareList] = useState([]);
   const [expiresAt, setExpiresAt] = useState();
+  const [email, setEmail] = useState("");
+  const user = useSelector((state) => state?.auth?.user);
+  const getAxiosJWT = useAxiosJWT();
+  const axiosJWT = getAxiosJWT();
+  const getCompareList = async () => {
+    try {
+      const res = await axiosJWT.get(`${BASE_URL}/user/${user._id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+        withCredentials: true,
+      });
+      const result = res.data;
+      setCompareList(result.data);
+    } catch (error) {
+      return toastifyError(error.response?.data?.message);
+    }
+  };
   useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(state.user));
-  }, [state.user]);
-
+    getCompareList();
+  }, []);
   return (
     <AuthContext.Provider
       value={{
-        user: state.user,
-        error: state.error,
-        loading: state.loading,
-        dispatch,
         email,
         setEmail,
         expiresAt,
         setExpiresAt,
+        compareList,
+        setCompareList,
+        getCompareList,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
-};
+}
+
+export default AuthProvider;

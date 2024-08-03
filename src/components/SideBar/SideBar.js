@@ -2,7 +2,7 @@ import { useContext } from "react";
 import classNames from "classnames/bind";
 
 import { BASE_URL } from "../../config/utils";
-import useFetch from "../../hooks/useFetch";
+import useAxios from "../../hooks/useAxios";
 import Slider from "react-slider";
 import Title from "../../shared/Title/Title";
 import ProductBox from "../../shared/ProductBox/ProductBox";
@@ -14,7 +14,7 @@ const cx = classNames.bind(styles);
 function SideBar() {
   const { size, setSize, age, setAge, values, setValues, MAX, MIN } =
     useContext(FilterContext);
-  const { data: topWines } = useFetch(`${BASE_URL}/wines/top-rated`);
+  const { data: topWines } = useAxios(`${BASE_URL}/wines/top-rated`);
   return (
     <aside className={cx("side-bar")}>
       <div className={cx("filter-box")}>
@@ -103,9 +103,9 @@ function SideBar() {
         <Title title={"Top rated products"} />
         <div className={cx("top-products")}>
           {topWines.map((wine) => (
-            <>
-              <ProductBox key={wine._id} product={wine} />
-            </>
+            <div key={wine._id}>
+              <ProductBox product={wine} />
+            </div>
           ))}
         </div>
       </div>

@@ -1,111 +1,159 @@
 import { createContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+
+import { toastifyError, toastifySuccess } from "../shared/Toastify/Toastify";
+import { BASE_URL } from "../config/utils";
+import useAxiosJwt from "../config/axiosConfig";
 
 export const CartContext = createContext();
 function CartProvider({ children }) {
+  const user = useSelector((state) => state?.auth?.user);
+  const [products, setProducts] = useState([]);
   const [openCart, setOpenCart] = useState(false);
-  const [cart, setCart] = useState([]);
-  const [amount, setAmount] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const getAxios = useAxiosJwt();
+  const axiosJwt = getAxios();
 
-  const handleTotal = (accumulator, currentItem) => {
-    if (currentItem.newPrice) {
-      return accumulator + currentItem.amount * currentItem.newPrice;
-    } else {
-      return accumulator + currentItem.amount * currentItem.price;
+  const getProducts = async () => {
+    try {
+      const res = await axiosJwt.get(`${BASE_URL}/cart/${user._id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+        withCredentials: true,
+      });
+      const result = res.data;
+      setProducts(result.data.products);
+    } catch (error) {
+      return toastifyError(error?.response?.data?.message);
+    }
+  };
+  const handleAddToCart = async (id, quantity) => {
+    setLoading(true);
+    try {
+      const res = await axiosJwt.post(
+        `${BASE_URL}/cart/add/${user._id}`,
+        JSON.stringify({ wineId: id, quantity: quantity }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
+      const result = res.data;
+      if (result) {
+        getProducts();
+        setLoading(false);
+        toastifySuccess(result.message);
+      }
+    } catch (error) {
+      setLoading(false)
+      toastifyError(error?.resonse?.data?.message);
+    }
+  };
+  const increaseProduct = async (id) => {
+    try {
+      await axiosJwt.put(
+        `${BASE_URL}/cart/increase/${user._id}`,
+        JSON.stringify({ wineId: id }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
+      getProducts();
+    } catch (error) {
+      return toastifyError(error?.resonse?.data?.message);
+    }
+  };
+  const decreaseProduct = async (id) => {
+    try {
+      await axiosJwt.put(
+        `${BASE_URL}/cart/decrease/${user._id}`,
+        JSON.stringify({ wineId: id }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
+      getProducts();
+    } catch (error) {
+      return toastifyError(error?.resonse?.data?.message);
+    }
+  };
+  const clearProduct = async () => {
+    try {
+      const res = await axiosJwt.put(`${BASE_URL}/cart/clear/${user._id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.accessToken}`,
+        },
+        withCredentials: true,
+      });
+      const result = res.data;
+      if (result) {
+        getProducts();
+      }
+    } catch (error) {
+      return toastifyError(error?.resonse?.data?.message);
+    }
+  };
+  const removeProduct = async (id) => {
+    try {
+      await axiosJwt.put(
+        `${BASE_URL}/cart/remove/${user._id}`,
+        JSON.stringify({ wineId: id }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${user.accessToken}`,
+          },
+          withCredentials: true,
+        }
+      );
+      getProducts();
+    } catch (error) {
+      return toastifyError(error?.response?.data?.message);
     }
   };
 
   useEffect(() => {
-    if (cart) {
-      const amount = cart.reduce((accumulator, currentItem) => {
-        return accumulator + currentItem.amount;
+    getProducts();
+  }, []);
+  useEffect(() => {
+    const calculateTotalPrice = () => {
+      const total = products.reduce((total, item) => {
+        return total + item.quantity * item.wine.newPrice;
       }, 0);
-      setAmount(amount);
-    }
-  }, [cart]);
+      setTotalPrice(total);
+    };
 
-  useEffect(() => {
-    if (cart) {
-      const total = cart.reduce(handleTotal, 0);
-      setTotal(total);
-    }
-  }, [cart]);
+    calculateTotalPrice();
+  }, [products]);
 
-  const addToCart = (product, id) => {
-    const newItem = { ...product, amount: 1 };
-
-    const cartItems = cart.find((cartItem) => {
-      return cartItem._id === id;
-    });
-    if (cartItems) {
-      const newCarts = [...cart].map((newCart) => {
-        if (newCart._id === id) {
-          return { ...newCart, amount: cartItems.amount + 1 };
-        } else {
-          return newCart;
-        }
-      });
-      setCart(newCarts);
-    } else {
-      setCart([...cart, newItem]);
-    }
-    toast.success("The product has been added to cart", {
-      autoClose: 1500,
-      pauseOnHover: false,
-    });
-  };
-
-  const increaseCart = (id) => {
-    const newCart = cart.find((item) => {
-      return item._id === id;
-    });
-    addToCart(newCart, id);
-  };
-
-  const decreaseCart = (id) => {
-    const cartItem = cart.find((item) => {
-      return item._id === id;
-    });
-    if (cartItem) {
-      const newCart = cart.map((item) => {
-        if (item._id === id) {
-          return { ...item, amount: cartItem.amount - 1 };
-        } else {
-          return item;
-        }
-      });
-      setCart(newCart);
-    }
-    if (cartItem.amount < 2) {
-      removeCart(id);
-    }
-  };
-
-  const removeCart = (id) => {
-    const newCarts = cart.filter((item) => {
-      return item._id !== id;
-    });
-
-    setCart(newCarts);
-  };
-
-  const clearCart = () => {
-    setCart([]);
-  };
   return (
     <CartContext.Provider
       value={{
         openCart,
-        amount,
-        total,
-        cart,
+        totalPrice,
+        products,
+        loading,
         setOpenCart,
-        addToCart,
-        increaseCart,
-        decreaseCart,
-        removeCart,
-        clearCart,
+        handleAddToCart,
+        increaseProduct,
+        decreaseProduct,
+        clearProduct,
+        removeProduct,
       }}
     >
       {children}

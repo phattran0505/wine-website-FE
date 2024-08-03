@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
 import classNames from "classnames/bind";
 
+import useAxios from "../../hooks/useAxios";
 import { BASE_URL } from "../../config/utils";
 import SubTitle from "../../shared/SubTitle/SubTitle";
 import ProductBox from "../../shared/ProductBox/ProductBox";
@@ -8,20 +8,10 @@ import ProductBox from "../../shared/ProductBox/ProductBox";
 import styles from "./Featured.module.scss";
 const cx = classNames.bind(styles);
 function Featured() {
-  const [featured, setFeatured] = useState([]);
-  const fetchDB = async () => {
-    try {
-      const res = await fetch(`${BASE_URL}/wines/featured`, { method: "get" });
-      const result = await res.json();
-      setFeatured(result.data);
-    } catch (error) {
-      alert(error);
-    }
-  };
+  // const [featured, setFeatured] = useState([]);
+  const { data: featured } = useAxios(`${BASE_URL}/wines/featured`);
 
-  useEffect(() => {
-    fetchDB();
-  }, []);
+
   return (
     <div className={cx("featured-container")}>
       <SubTitle subtitle={"featured products"} />

@@ -9,7 +9,9 @@ import CartItem from "../CartItem/CartItem";
 import styles from "./CartContainer.module.scss";
 const cx = classNames.bind(styles);
 function CartContainer() {
-  const { openCart, setOpenCart, cart,clearCart,total } = useContext(CartContext);
+  const { openCart, setOpenCart, clearProduct, totalPrice, products } =
+    useContext(CartContext);
+    
   return (
     <div className={cx("cart-container", openCart ? "" : "close")}>
       <div className={cx("cart-header")}>
@@ -20,22 +22,26 @@ function CartContainer() {
         />
       </div>
       <div className={cx("cart-body")}>
-        {cart?.map((cartItem)=>(
-          <CartItem item={cartItem}/>
+        {products?.map((cartItem) => (
+          <CartItem item={cartItem.wine} key={cartItem._id} wine={cartItem} />
         ))}
       </div>
       <div className={cx("cart-footer")}>
         <div className={cx("total-box")}>
           <div className={cx("total")}>
-            TOTAL: <p>$ {parseInt(total).toFixed(2)}</p>
+            TOTAL: <p>$ {parseInt(totalPrice).toFixed(2)}</p>
           </div>
-          <div className={cx("delete")} onClick={()=>clearCart()}>
+          <div className={cx("delete")} onClick={clearProduct}>
             <FaTrashAlt />
           </div>
         </div>
         <div className={cx("pay-box")}>
-          <Link to="#" className={cx("view-cart")}>View cart</Link>
-          <Link to="#" className={cx("checkout")}>Checkout</Link>
+          <Link to="#" className={cx("view-cart")}>
+            View cart
+          </Link>
+          <Link to="#" className={cx("checkout")}>
+            Checkout
+          </Link>
         </div>
       </div>
     </div>

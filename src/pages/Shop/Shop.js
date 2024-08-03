@@ -8,7 +8,7 @@ import { FilterContext } from "../../contexts/FilterContext";
 import { AuthContext } from "../../contexts/AuthContext";
 import { BASE_URL } from "../../config/utils";
 import { toastifyError } from "../../shared/Toastify/Toastify";
-import useFetch from "../../hooks/useFetch";
+import useAxios from "../../hooks/useAxios";
 import Address from "../../shared/Address/Address";
 import SideBar from "../../components/SideBar/SideBar";
 import ProductBox from "../../shared/ProductBox/ProductBox";
@@ -19,7 +19,7 @@ function Shop() {
   const location = useLocation();
   const { user } = useContext(AuthContext);
   const [selectedValue, setSelectedValue] = useState("default");
-  const { data: wines } = useFetch(`${BASE_URL}/wines?type=${selectedValue}`);
+  const { data: wines } = useAxios(`${BASE_URL}/wines?type=${selectedValue}`);
   const [filterWines, setFilterWines] = useState([]);
   const { size, age, setSize, setAge, values, setValues, MIN, MAX } =
     useContext(FilterContext);
@@ -86,6 +86,7 @@ function Shop() {
       if (type === "popular") {
         return b.star - a.star;
       }
+      return filterWines
     });
   };
   useEffect(() => {

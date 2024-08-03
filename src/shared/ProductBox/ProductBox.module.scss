@@ -41,14 +41,17 @@
       gap: 10px;
       font-size: 18px;
       opacity: 0;
-      transition: var(--transition);
       a {
         color: var(--primary-color);
         transition: var(--transition);
-      }
-      .heart {
-        transition: var(--transition);
-        color: #fd6d75;
+        .loading-favorite_icon,
+        .loading-compare_icon {
+          animation: loading 1s infinite ease;
+        }
+        &.heart {
+          transition: var(--transition);
+          color: #fd6d75;
+        }
       }
     }
   }
@@ -103,5 +106,29 @@
 
   &:hover .icons {
     opacity: 1;
+  }
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .product-box {
+    .product-image {
+      .icons {
+        opacity: 1;
+      }
+    }
+
+    .option-btn {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }

@@ -1,19 +1,25 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import {useNavigate} from 'react-router-dom'
-import { AuthContext } from "../../contexts/AuthContext";
-import { BASE_URL } from "../../config/utils";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import ClipLoader from "react-spinners/ClipLoader";
+import { toastifySuccess, toastifyError } from "../../shared/Toastify/Toastify";
 import classNames from "classnames/bind";
 
+import { AuthContext } from "../../contexts/AuthContext";
+import { BASE_URL } from "../../config/utils";
 import Address from "../../shared/Address/Address";
 
 import styles from "./OTPInput.module.scss";
+import axios from "axios";
 const cx = classNames.bind(styles);
 function OTPInput() {
   const { email, expiresAt } = useContext(AuthContext);
   const input1Ref = useRef();
-  const navigate = useNavigate()
-  const timer = Math.floor((new Date(expiresAt).getTime() - new Date().getTime()) / 1000)
+  const navigate = useNavigate();
+  const timer = Math.floor(
+    (new Date(expiresAt).getTime() - new Date().getTime()) / 1000
+  );
+  const [loading, setLoading] = useState(false);
   const [time, setTime] = useState(timer);
   const [toggle, setToggle] = useState(false);
   const [values, setValues] = useState({
@@ -22,6 +28,7 @@ function OTPInput() {
     input3: "",
     input4: "",
   });
+  const otp = Number(Object.values(values).join(""));
   const handleChange = (e) => {
     const { name, value } = e.target;
     setValues({
@@ -29,7 +36,6 @@ function OTPInput() {
       [name]: value,
     });
   };
-  const otp = Number(Object.values(values).join(""));
   useEffect(() => {
     if (time === 0) {
       setToggle(true);
@@ -40,65 +46,46 @@ function OTPInput() {
     }, 1000);
     return () => clearInterval(interval);
   }, [time]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = toast.loading("Loading...", { pauseOnHover: false });
+    setLoading(true);
     try {
-      const res = await fetch(`${BASE_URL}/otp/check`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ otp, email }),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        return toast.update(id, {
-          type: "error",
-          render: result.message,
-          isLoading: false,
-          autoClose: 1500,
-          pauseOnHover: false,
-        });
+      const res = await axios.post(
+        `${BASE_URL}/otp/check`,
+        JSON.stringify({ otp, email }),
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      const result = res.data;
+      if (result) {
+        toastifySuccess(result.message);
+        setLoading(false);
+        navigate("/change");
       }
-      toast.update(id, {
-        type: "success",
-        render: result.message,
-        isLoading: false,
-        autoClose: 1500,
-        pauseOnHover: false,
-      });
-      navigate("/change")
     } catch (error) {
-      return toast.update(id, {
-        type: "success",
-        render: error.message,
-        isLoading: false,
-        autoClose: 1500,
-        pauseOnHover: false,
-      });
+      setLoading(false);
+      toastifyError(error.response?.data?.message);
     }
   };
   const resendOTP = async () => {
     const id = toast.loading("Loading...", { pauseOnHover: false });
     try {
-      const res = await fetch(`${BASE_URL}/otp/send`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        return toast.update(id, {
-          type: "error",
-          render: result.message,
-          isLoading: false,
-          autoClose: 1500,
-          pauseOnHover: false,
-        });
-      }
+      const res = await axios.post(
+        `${BASE_URL}/otp/send`,
+        JSON.stringify({ email }),
+        {
+          headers: {
+            "content-type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      const result = res.data;
       if (result.data) {
         toast.update(id, {
           type: "success",
@@ -170,7 +157,19 @@ function OTPInput() {
             </div>
           </div>
           <div className={cx("button")}>
-            <button type="submit">Verify Account</button>
+            <button type="submit">
+              {loading ? (
+                <ClipLoader
+                  color="var(--dark-color)"
+                  cssOverride={{}}
+                  loading
+                  size={13}
+                  speedMultiplier={1}
+                />
+              ) : (
+                "Verify Account"
+              )}
+            </button>
           </div>
           <div className={cx("timer")}>
             {toggle ? (

@@ -1,14 +1,20 @@
 import { useContext, useState } from "react";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import classNames from "classnames/bind";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import { AuthContext } from "../../contexts/AuthContext";
 import { BASE_URL } from "../../config/utils";
+import {
+  toastifyError,
+  toastifySuccess,
+  toastifyWarn,
+} from "../../shared/Toastify/Toastify";
 import Address from "../../shared/Address/Address";
 
 import styles from "./ChangePassword.module.scss";
+import axios from "axios";
 const cx = classNames.bind(styles);
 function ChangePassword() {
   const { email } = useContext(AuthContext);
@@ -18,54 +24,32 @@ function ChangePassword() {
   const [showNewPass, setShowNewPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = toast.loading("Loading...", { pauseOnHover: false });
+    setLoading(true);
     if (confirmPass === "" || newPass === "" || !isChecked) {
-      return toast.update(id, {
-        type: "warning",
-        render: "All fields are required",
-        autoClose: 1500,
-        isLoading: false,
-        pauseOnHover: false,
-      });
+      return toastifyWarn("All fields are required");
     }
     try {
-      const res = await fetch(`${BASE_URL}/auth/reset`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ email, newPass, confirmPass }),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        return toast.update(id, {
-          type: "error",
-          render: result.message,
-          isLoading: false,
-          autoClose: 1500,
-          pauseOnHover: false,
-        });
-      }
+      const res = await axios.post(
+        `${BASE_URL}/auth/reset`,
+        JSON.stringify({ email, newPass, confirmPass }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      const result = res.data;
       if (result.data) {
-        toast.update(id, {
-          type: "success",
-          render: result.message,
-          isLoading: false,
-          autoClose: 1500,
-          pauseOnHover: false,
-        });
+        setLoading(false);
+        toastifySuccess(result.message);
         navgiate("/login");
       }
     } catch (error) {
-      return toast.update(id, {
-        type: "error",
-        render: error.message,
-        isLoading: false,
-        autoClose: 1500,
-        pauseOnHover: false,
-      });
+      return toastifyError(error.response?.data?.message);
     }
   };
   const toggleNewPass = () => {
@@ -112,6 +96,7 @@ function ChangePassword() {
             <div className={cx("remember")}>
               <input
                 type="checkbox"
+                required
                 value={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
               ></input>
@@ -121,7 +106,19 @@ function ChangePassword() {
             </div>
           </div>
           <div className={cx("input-box")}>
-            <button type="submit">Reset Password</button>
+            <button type="submit">
+              {loading ? (
+                <ClipLoader
+                  color="var(--dark-color)"
+                  cssOverride={{}}
+                  loading
+                  size={13}
+                  speedMultiplier={1}
+                />
+              ) : (
+                "Reset Password"
+              )}
+            </button>
           </div>
         </form>
       </div>

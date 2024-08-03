@@ -10,7 +10,15 @@ function Footer() {
   return (
     <footer>
       <div className={cx("footer-content")}>
-        <img src={logo} alt=""></img>
+        <Link
+          to="/"
+          onClick={(e) => {
+            e.preventDefault();
+            window.location.href = "/";
+          }}
+        >
+          <img src={logo} alt=""></img>
+        </Link>
         <ul>
           <li>
             <NavLink

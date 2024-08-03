@@ -8,10 +8,11 @@ import { CartContext } from "../../contexts/CartContext";
 import styles from "./CartItem.module.scss";
 import { useContext } from "react";
 const cx = classNames.bind(styles);
-function CartItem({ item }) {
-  const words = item.name.split(" ")
-  const name = words.slice(0,4).join(" ")
-  const { removeCart, increaseCart, decreaseCart } = useContext(CartContext);
+function CartItem({ item, wine }) {
+  const { increaseProduct, decreaseProduct, removeProduct } =
+    useContext(CartContext);
+  const words = item.name.split(" ");
+  const name = words.slice(0, 4).join(" ");
   return (
     <div className={cx("cart")}>
       <Link to="#">
@@ -22,19 +23,23 @@ function CartItem({ item }) {
           <Link to="#">{name} ...</Link>
           <IoIosClose
             className={cx("delete-icon")}
-            onClick={() => removeCart(item._id)}
+            onClick={() => removeProduct(item._id)}
           />
         </div>
         <div className={cx("price-container")}>
           <div className={cx("amount")}>
-            <div className={cx("minus")}>
-              <FaMinus
-                onClick={() => decreaseCart(item._id)}
-              />
+            <div
+              className={cx("minus")}
+              onClick={() => decreaseProduct(item._id)}
+            >
+              <FaMinus />
             </div>
-            <div className={cx("number")}>{item.amount}</div>
-            <div className={cx("plus")}>
-              <FaPlus onClick={() => increaseCart(item._id)} />
+            <div className={cx("number")}>{wine.quantity}</div>
+            <div
+              className={cx("plus")}
+              onClick={() => increaseProduct(item._id)}
+            >
+              <FaPlus />
             </div>
           </div>
           <div className={cx("item-price")}>
@@ -44,7 +49,7 @@ function CartItem({ item }) {
           </div>
           <div className={cx("total-price")}>
             <p className={cx("price")}>
-              $ {parseInt(item.newPrice * item.amount).toFixed(2)}
+              $ {parseInt(item.newPrice * wine.quantity).toFixed(2)}
             </p>
           </div>
         </div>

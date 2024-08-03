@@ -4,17 +4,16 @@ import classNames from "classnames/bind";
 
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
 import { BASE_URL } from "../../config/utils";
-import useFetch from "../../hooks/useFetch";
+import useAxios from "../../hooks/useAxios";
 import Address from "../../shared/Address/Address";
-
 import styles from "./Blog.module.scss";
 const cx = classNames.bind(styles);
 function Blog() {
   const location = useLocation();
   const [pageCount, setPageCount] = useState(0);
   const [page, setPage] = useState(0);
-  const { data: blogs } = useFetch(`${BASE_URL}/blog?page=${page}`);
-  const { data: blogCount } = useFetch(`${BASE_URL}/blog/count`);
+  const { data: blogs } = useAxios(`${BASE_URL}/blog?page=${page}`);
+  const { data: blogCount } = useAxios(`${BASE_URL}/blog/count`);
 
   useEffect(() => {
     const pages = Math.ceil(blogCount / 3);

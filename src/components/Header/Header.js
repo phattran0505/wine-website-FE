@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import classNames from "classnames/bind";
 
 import { Link } from "react-router-dom";
@@ -22,7 +22,6 @@ function Header() {
   return (
     <header>
       <Swiper
-        // onSliderMove={handleSlideChange}
         onSlideChange={handleSlideChange}
         modules={[Navigation, Autoplay, EffectFade]}
         slidesPerView={1}

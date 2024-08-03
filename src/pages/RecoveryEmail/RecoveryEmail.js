@@ -1,57 +1,47 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import ClipLoader from "react-spinners/ClipLoader";
+import {
+  toastifyError,
+  toastifySuccess,
+} from "../../shared/Toastify/Toastify";
 import classNames from "classnames/bind";
 
 import { BASE_URL } from "../../config/utils";
-import { toast } from "react-toastify";
 import Address from "../../shared/Address/Address";
 
 import styles from "./RecoveryEmail.module.scss";
+import axios from "axios";
 const cx = classNames.bind(styles);
 function RecoveryEmail() {
   const { email, setEmail, setExpiresAt } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   const navgiate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const id = toast.loading("Loading...", { pauseOnHover: false });
+    setLoading(true);
     try {
-      const res = await fetch(`${BASE_URL}/otp/send`, {
-        method: "post",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-      const result = await res.json();
-      if (!res.ok) {
-        return toast.update(id, {
-          type: "error",
-          render: result.message,
-          autoClose: 1500,
-          isLoading: false,
-          pauseOnHover: false,
-        });
-      }
+      const res = await axios.post(
+        `${BASE_URL}/otp/send`,
+        JSON.stringify({ email }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials:true
+        }
+      );
+      const result = res.data;
       if (result.data) {
-        toast.update(id, {
-          type: "success",
-          render: result.message,
-          autoClose: 1500,
-          isLoading: false,
-          pauseOnHover: false,
-        });
+        toastifySuccess(result.message);
+        setLoading(false);
         setExpiresAt(result.data.expiresAt);
         navgiate("/otp");
       }
     } catch (error) {
-      return toast.update(id, {
-        type: "error",
-        render: error.message,
-        autoClose: 1500,
-        isLoading: false,
-        pauseOnHover: false,
-      });
+      setLoading(false);
+      toastifyError(error.response?.data?.message);
     }
   };
   return (
@@ -69,7 +59,19 @@ function RecoveryEmail() {
             ></input>
           </div>
           <div className={cx("input-box")}>
-            <button type="submit">Send</button>
+            <button type="submit">
+              {loading ? (
+                <ClipLoader
+                  color="var(--dark-color)"
+                  cssOverride={{}}
+                  loading
+                  size={13}
+                  speedMultiplier={1}
+                />
+              ) : (
+                "Send"
+              )}
+            </button>
           </div>
         </form>
       </div>

@@ -4,6 +4,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import classNames from "classnames/bind";
+import ClipLoader from "react-spinners/ClipLoader";
 
 import { BASE_URL } from "../../config/utils";
 import { icons } from "../../assets/data/Data";
@@ -14,12 +15,11 @@ import {
   FaHeart,
 } from "react-icons/fa";
 import { CartContext } from "../../contexts/CartContext";
-import { AuthContext } from "../../contexts/AuthContext";
 import Description from "../../components/Decription/Decription";
 import Informaion from "../../components/Information/Information";
 import Review from "../../components/Review/Review";
 import Address from "../../shared/Address/Address";
-import useFetch from "../../hooks/useFetch";
+import useAxios from "../../hooks/useAxios";
 import ProductBox from "../../shared/ProductBox/ProductBox";
 
 import "swiper/scss";
@@ -29,8 +29,8 @@ import styles from "./WineDetail.module.scss";
 const cx = classNames.bind(styles);
 function WineDetail() {
   const [active, setActive] = useState("desc");
-  const { user } = useContext(AuthContext);
-  const { addToCart } = useContext(CartContext);
+  const [quantity, setQuantity] = useState(1);
+  const { handleAddToCart, loading } = useContext(CartContext);
   const { id } = useParams();
   const breakpoints = {
     1024: {
@@ -65,20 +65,15 @@ function WineDetail() {
       slidesPerView: 1,
     },
   };
-  const { data: wineDetail } = useFetch(`${BASE_URL}/wines/${id}`);
-  const { data: wines } = useFetch(`${BASE_URL}/wines`);
+  const { data: wineDetail } = useAxios(`${BASE_URL}/wines/${id}`);
+  const { data: wines } = useAxios(`${BASE_URL}/wines`);
+
   const randomWines = (wines) => {
     const shuffled = [...wines];
     shuffled.sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 8);
   };
   const getRandomWines = randomWines(wines);
-  const handleAddToCart = () => {
-    if (!user || user === undefined || user === null) {
-      return alert("You're not authenticated. Please sign in !!");
-    }
-    addToCart(wineDetail, id);
-  };
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
@@ -161,10 +156,26 @@ function WineDetail() {
               </select>
             </div>
             <div className={cx("add-box")}>
-              <input type="number" min={1} step="1"></input>
-              <button onClick={handleAddToCart}>
+              <input
+                type="number"
+                min={1}
+                step="1"
+                value={quantity}
+                onChange={(e) => setQuantity(e.target.value)}
+              ></input>
+              <button onClick={() => handleAddToCart(id, quantity)}>
                 <i>
-                  <FaShoppingCart />
+                  {loading ? (
+                    <ClipLoader
+                      color="var(--primary-color)"
+                      cssOverride={{}}
+                      loading
+                      size={13}
+                      speedMultiplier={1}
+                    />
+                  ) : (
+                    <FaShoppingCart />
+                  )}
                 </i>
                 add to cart
               </button>

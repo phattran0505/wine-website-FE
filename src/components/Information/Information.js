@@ -18,7 +18,7 @@ function Information() {
           </tr>
           <tr>
             <th>size:</th>
-            <td>25cl,50cl,75cl</td>
+            <td>25cl, 50cl, 75cl</td>
           </tr>
           <tr>
             <th>strength:</th>
