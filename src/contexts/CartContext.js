@@ -31,6 +31,9 @@ function CartProvider({ children }) {
     }
   };
   const handleAddToCart = async (id, quantity) => {
+    if (!user || user === undefined || user === null) {
+      return toastifyError("You're not authenticated. Please sign in !!");
+    }
     setLoading(true);
     try {
       const res = await axiosJwt.post(
