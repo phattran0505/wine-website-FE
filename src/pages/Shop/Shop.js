@@ -70,24 +70,28 @@ function Shop() {
     fetchDB();
   };
   const sortFunc = (type) => {
-    filterWines.sort((a, b) => {
-      if (type === "a-z" || type === "default") {
-        return a.name.localeCompare(b.name);
+    const arrayToSort = filterWines.length > 0 ? [...filterWines] : [...wines];
+
+    arrayToSort.sort((a, b) => {
+      if (type === "default" || type === "a-z") {
+        return a.name.localeCompare(b.name); // Sort A to Z
       }
       if (type === "z-a") {
-        return b.name.localeCompare(a.name);
+        return b.name.localeCompare(a.name); // Sort Z to A
       }
       if (type === "asc") {
-        return Number(a.newPrice) - Number(b.newPrice);
+        return Number(a.newPrice) - Number(b.newPrice); // Sort by price: low to high
       }
       if (type === "dsc") {
-        return Number(b.newPrice) - Number(a.newPrice);
+        return Number(b.newPrice) - Number(a.newPrice); // Sort by price: high to low
       }
       if (type === "popular") {
-        return b.star - a.star;
+        return b.star - a.star; // Sort by popularity
       }
-      return filterWines
+      return 0;
     });
+
+    filterWines.length > 0 ? setFilterWines(arrayToSort) : setFilterWines(arrayToSort);
   };
   useEffect(() => {
     sortFunc(selectedValue);
@@ -95,6 +99,7 @@ function Shop() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [user]);
+  
   return (
     <section className={cx("shop-section")}>
       <Address address={location.pathname.slice(1)} />

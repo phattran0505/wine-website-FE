@@ -62,6 +62,7 @@ function Header() {
             </div>
           </SwiperSlide>
         ))}
+        
         {/* slide buttons */}
         <div className={cx("slide-buttons")}>
           <div className={cx("slide-button", "prev-button")}>
