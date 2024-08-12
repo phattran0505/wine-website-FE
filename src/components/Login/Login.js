@@ -49,7 +49,7 @@ function Login() {
       );
       const result = res.data;
       dispatch(loginSuccess(result.data));
-      if (result.data) {
+      if (result) {
         toastifySuccess("Login success");
       }
       navigate("/");
