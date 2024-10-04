@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { jwtDecode } from "jwt-decode";
-import { loginSuccess } from "../redux/authSlice";
+import { loginSuccess, logoutSuccess } from "../redux/authSlice";
 import { useCallback } from "react";
 import { BASE_URL } from "./utils";
 
@@ -26,7 +26,10 @@ const useAxiosJWT = () => {
         );
         return res.data;
       } catch (error) {
-        alert(error.message);
+        if (error.response?.status === 401) {
+          alert("Session expired. Please log in again.");
+          dispatch(logoutSuccess());
+        }
         throw error;
       }
     };
@@ -35,11 +38,18 @@ const useAxiosJWT = () => {
       async (config) => {
         let date = new Date();
         const decodedToken = jwtDecode(user.accessToken);
-        if (decodedToken.exp < date.getTime() / 1000) {
+        const refreshThreshold = 60;
+        if (decodedToken.exp < date.getTime() / 1000 - refreshThreshold) {
           const data = await handleRefreshToken();
-          const refreshUser = { ...user, accessToken: data.accessToken };
-          dispatch(loginSuccess(refreshUser));
-          config.headers["Authorization"] = `Bearer ${data.accessToken}`;
+          if (data && data.accessToken) {
+            const refreshUser = { ...user, accessToken: data.accessToken };
+            dispatch(loginSuccess(refreshUser));
+            config.headers["Authorization"] = `Bearer ${data.accessToken}`;
+          } else {
+            dispatch(logoutSuccess());
+          }
+        } else {
+          config.headers["Authorization"] = `Bearer ${user.accessToken}`;
         }
         return config;
       },

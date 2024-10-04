@@ -44,6 +44,7 @@ function NavBar() {
         }
       );
       dispatch(logoutSuccess());
+      window.location.reload()
       const result = res.data;
       if (result.data) {
         navigate("/");

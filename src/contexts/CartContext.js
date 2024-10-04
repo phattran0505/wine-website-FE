@@ -132,7 +132,7 @@ function CartProvider({ children }) {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [user]);
   useEffect(() => {
     const calculateTotalPrice = () => {
       const total = products.reduce((total, item) => {
@@ -142,8 +142,7 @@ function CartProvider({ children }) {
     };
 
     calculateTotalPrice();
-  }, [products]);
-
+  }, [products]);  
   return (
     <CartContext.Provider
       value={{
