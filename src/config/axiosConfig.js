@@ -26,10 +26,6 @@ const useAxiosJWT = () => {
         );
         return res.data;
       } catch (error) {
-        if (error.response?.status === 401) {
-          alert("Session expired. Please log in again.");
-          dispatch(logoutSuccess());
-        }
         throw error;
       }
     };
