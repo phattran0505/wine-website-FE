@@ -8,6 +8,7 @@ import useAxiosJwt from "../config/axiosConfig";
 export const CartContext = createContext();
 function CartProvider({ children }) {
   const user = useSelector((state) => state?.auth?.user);
+
   const [products, setProducts] = useState([]);
   const [openCart, setOpenCart] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -30,7 +31,7 @@ function CartProvider({ children }) {
       return toastifyError(error?.response?.data?.message);
     }
   };
-  const handleAddToCart = async (id, quantity) => {
+  const handleAddToCart = async (wineId, quantity) => {
     if (!user || user === undefined || user === null) {
       return toastifyError("You're not authenticated. Please sign in !!");
     }
@@ -38,7 +39,7 @@ function CartProvider({ children }) {
     try {
       const res = await axiosJwt.post(
         `${BASE_URL}/cart/add/${user._id}`,
-        JSON.stringify({ wineId: id, quantity: quantity }),
+        JSON.stringify({ wineId: wineId, quantity: quantity }),
         {
           headers: {
             "Content-Type": "application/json",
@@ -54,7 +55,7 @@ function CartProvider({ children }) {
         toastifySuccess(result.message);
       }
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
       toastifyError(error?.resonse?.data?.message);
     }
   };
@@ -142,7 +143,8 @@ function CartProvider({ children }) {
     };
 
     calculateTotalPrice();
-  }, [products]);  
+  }, [products]);
+
   return (
     <CartContext.Provider
       value={{
@@ -156,6 +158,7 @@ function CartProvider({ children }) {
         decreaseProduct,
         clearProduct,
         removeProduct,
+        setProducts,
       }}
     >
       {children}

@@ -42,11 +42,17 @@ nav {
           justify-content: center;
           gap: 3px;
           cursor: pointer;
-          a {
+          a,
+          button {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 3px;
+            outline: none;
+            border: none;
+            background-color: transparent;
+            color: var(--gray-color);
+            cursor: pointer;
             &:hover {
               color: var(--white-color);
               transition: var(--transtion);

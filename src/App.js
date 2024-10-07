@@ -30,7 +30,7 @@ function App() {
     const fakeData = () => {
       setTimeout(() => {
         setIsLoading(false);
-      }, 4000);
+      }, 3000);
     };
     fakeData();
   }, []);

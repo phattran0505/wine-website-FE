@@ -25,7 +25,8 @@ import styles from "./NavBar.module.scss";
 const cx = classNames.bind(styles);
 function NavBar() {
   const navigate = useNavigate();
-  const { setOpenCart, openCart, products } = useContext(CartContext);
+  const { setOpenCart, openCart, products, setProducts } =
+    useContext(CartContext);
   const { setOpenMenu } = useContext(MenuContext);
   const { compareList } = useContext(AuthContext);
   const dispatch = useDispatch();
@@ -43,10 +44,10 @@ function NavBar() {
           withCredentials: true,
         }
       );
-      dispatch(logoutSuccess());
-      window.location.reload()
       const result = res.data;
-      if (result.data) {
+      if (result.success) {
+        dispatch(logoutSuccess());
+        setProducts([]);
         navigate("/");
       }
     } catch (error) {
@@ -54,6 +55,7 @@ function NavBar() {
       toastifyError(error.respons?.data?.message);
     }
   };
+
   return (
     <nav>
       <div className={cx("top")}>
@@ -68,10 +70,10 @@ function NavBar() {
           <ul>
             <li>
               {user ? (
-                <Link to={"#"} onClick={logout}>
+                <button type="button" onClick={logout}>
                   <CiLogout style={{ fontSize: "18px" }} />
                   Logout
-                </Link>
+                </button>
               ) : (
                 <Link to={"/login"}>
                   <CiLogin style={{ fontSize: "18px" }} />
