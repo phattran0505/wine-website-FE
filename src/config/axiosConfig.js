@@ -25,6 +25,7 @@ const useAxiosJWT = () => {
         );
         return res.data;
       } catch (error) {
+        console.error("Error refreshing token:", error)
         throw error;
       }
     };
