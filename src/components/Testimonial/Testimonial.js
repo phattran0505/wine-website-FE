@@ -34,7 +34,7 @@ function Testimonial() {
   };
   return (
     <div className={cx("testimonial-container")}>
-      <SubTitle subtitle={"Testimonials"} />
+      <SubTitle subtitle={"memberlist"} />
       <div className={cx("testimonial-list")}>
         <Swiper
           spaceBetween={50}

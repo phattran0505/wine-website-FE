@@ -62,7 +62,7 @@ function Footer() {
           </li>
         </ul>
         <div className={cx("copyright")}>
-          <Link to="#">Zemez</Link>
+          <Link to="#">Group 5</Link>
           <FaRegCopyright />.<p>All rights reserved.</p>
         </div>
       </div>

@@ -206,34 +206,47 @@ export const featured = [
   },
 ];
 
-import avatar1 from "../images/testimonial/testimonial-1.jpg";
-import avatar2 from "../images/testimonial/testimonial-2.jpg";
-import avatar3 from "../images/testimonial/testimonial-3.jpg";
+import avatar1 from "../images/testimonial/member-1.jpg";
+import avatar2 from "../images/testimonial/member-2.jpg";
+import avatar3 from "../images/testimonial/member-3.jpg";
+import avatar4 from "../images/testimonial/member-4.jpg";
+import avatar5 from "../images/testimonial/member-5.jpg";
 
 export const testimonials = [
   {
-    name: "Nina Gomez",
-    job: "Customer Service Representative",
+    name: "Trần Đại Vĩ",
+    job: "Leader",
     avatar: avatar1,
-    desc: "Nina will gladly help you to resolve all the issues with your order status, shipping, returns, etc. She has over five years of experience in our company. She is very cheerful and nice with customers.…",
+    // desc: "Nina will gladly help you to resolve all the issues with your order status, shipping, returns, etc. She has over five years of experience in our company. She is very cheerful and nice with customers.…",
+    desc:"N22DCCI044"
   },
   {
-    name: "Jane Green",
-    job: "Desinger",
+    name: "Trần Xuân Phát",
+    job: "Member",
     avatar: avatar2,
-    desc: "Jane joined our team in 2013 and has recommended herself as one of the best employees always ready to help. Besides she is a talented credible manager she is also an experienced seamstress. She has…",
+    desc:"N22DCCI029"
+    // desc: "Jane joined our team in 2013 and has recommended herself as one of the best employees always ready to help. Besides she is a talented credible manager she is also an experienced seamstress. She has…",
   },
   {
-    name: "Michael Clark",
-    job: "Billing Specialist",
+    name: "Dương Minh Khang",
+    job: "Member",
     avatar: avatar3,
-    desc: "Michael is a our Billing  expert. He can answer your questions about your account, payment or refund status. He is also in charge of providing discounts and gift cards to our customers. Michael graduated from…",
+    desc:"N22DCCI023"
+    // desc: "Michael is a our Billing  expert. He can answer your questions about your account, payment or refund status. He is also in charge of providing discounts and gift cards to our customers. Michael graduated from…",
   },
   {
-    name: "Nina Gomez",
-    job: "Customer Service Representative",
-    avatar: avatar1,
-    desc: "Nina will gladly help you to resolve all the issues with your order status, shipping, returns, etc. She has over five years of experience in our company. She is very cheerful and nice with customers.…",
+    name: "Hoàng Nhật Quân",
+    job: "Member",
+    avatar: avatar4,
+    desc:"N22DCCI030",
+    // desc: "Nina will gladly help you to resolve all the issues with your order status, shipping, returns, etc. She has over five years of experience in our company. She is very cheerful and nice with customers.…",
+  },
+  {
+    name: "Nguyễn Mẫn",
+    job: "Member",
+    avatar: avatar5,
+    desc:"N22DCCI023"
+    // desc: "Nina will gladly help you to resolve all the issues with your order status, shipping, returns, etc. She has over five years of experience in our company. She is very cheerful and nice with customers.…",
   },
 ];
 
